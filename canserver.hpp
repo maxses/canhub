@@ -17,12 +17,13 @@ public:
     explicit MyServer(QObject *parent = 0);
     
 signals:
-   void allOut( const QByteArray& data );
+   void dataOut( const QByteArray& data, MyThread* source );
     
 public slots:
     void newConnection();
     void heartbeat();
     void removeConnection( MyThread* );
+    void dataIn( const QByteArray&, MyThread* source );
 
 private:
     //QTcpServer *server;

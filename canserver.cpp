@@ -44,17 +44,22 @@ void MyServer::incomingConnection(qintptr socketDescriptor) /* override */
     qDebug() << socketDescriptor << " Connecting...";
     MyThread *thread = new MyThread(socketDescriptor, this);
     m_listConnections += thread;
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+
+    //connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
     connect(thread, SIGNAL( deactivate( MyThread* )),
             this, SLOT(removeConnection( MyThread* )));
 
-    /*
-    connect(this, SIGNAL( allOut( const QByteArray& ) ),
-            thread, SLOT( xwrite( const QByteArray& ) ) );
-      */
+    connect(this, SIGNAL( dataOut( const QByteArray&, MyThread* ) ),
+            thread, SLOT( dataOut( const QByteArray&, MyThread* ) ) );
+
+    connect(thread, SIGNAL( dataIn( const QByteArray&, MyThread* ) ),
+            this, SLOT( dataIn( const QByteArray&, MyThread* ) ) );
+
     void allOut( const QByteArray &data );
-    thread->start();
+
+    //thread->start();
+    thread->run();
 }
 
 void MyServer::heartbeat()
@@ -66,9 +71,7 @@ void MyServer::heartbeat()
       // find your key
    }
 
-   qDebug() << "Emit start";
-   emit( allOut( QByteArray("   Server heartbeat\n") ) );
-   qDebug() << "Emit end";
+   emit( dataOut( QByteArray("   Server heartbeat\n"), nullptr ) );
 }
 
 void MyServer::removeConnection( MyThread* connection )
@@ -79,9 +82,15 @@ void MyServer::removeConnection( MyThread* connection )
                   m_listConnections.end(), connection) ) != m_listConnections.end() )
    {
       qDebug() << "   Found it!";
+      delete connection;
       // find your key
    }
    m_listConnections.removeAll( connection );
 
    return;
+}
+
+void MyServer::dataIn( const QByteArray& ba, MyThread* source )
+{
+   emit( dataOut( ba, source ) );
 }

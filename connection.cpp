@@ -3,9 +3,15 @@
 #include "connection.hpp"
 
 MyThread::MyThread(int ID, QObject *parent) :
-    QThread(parent)
+    //QThread(parent)
+   QObject(parent)
 {
     this->socketDescriptor = ID;
+}
+
+MyThread::~MyThread()
+{
+   qDebug() << "Deleting connection";
 }
 
 void MyThread::run()
@@ -25,16 +31,17 @@ void MyThread::run()
     qDebug() << socketDescriptor << " Client connected";
 
     // make this thread a loop
-    exec();
+    //exec();
 }
 
 void MyThread::readyRead()
 {
-    QByteArray Data = socket->readAll();
+    QByteArray data = socket->readAll();
 
-    qDebug() << socketDescriptor << " Data in: " << Data;
+    qDebug() << socketDescriptor << " Data in: " << data;
 
-    socket->write(Data);
+    //socket->write(Data);
+    emit( dataIn( data, this ) );
 }
 
 void MyThread::disconnected()
@@ -42,7 +49,7 @@ void MyThread::disconnected()
     qDebug() << socketDescriptor << " Disconnected";
     emit( deactivate( this ) );
     socket->deleteLater();
-    exit(0);
+    //exit(0);
 }
 
 void MyThread::write( const QByteArray &ba )
@@ -50,7 +57,10 @@ void MyThread::write( const QByteArray &ba )
    socket->write( ba );
 }
 
-void MyThread::xwrite( const QByteArray& ba )
+void MyThread::dataOut( const QByteArray& ba, MyThread* source )
 {
-   socket->write( ba );
+   if( source != this )
+   {
+      socket->write( ba );
+   }
 }
