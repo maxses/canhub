@@ -20,7 +20,8 @@ MyServer::MyServer(QObject *parent) :
     }
 
     connect ( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ));
-    m_heartbeatTimer.start(1000);
+    //m_heartbeatTimer.start(1000);
+    m_heartbeatTimer.stop();
 }
 
 void MyServer::newConnection()
@@ -76,8 +77,9 @@ void MyServer::heartbeat()
 
 void MyServer::removeConnection( MyThread* connection )
 {
-   QList<MyThread*>::iterator threadIterator;
    qDebug() << "Removing connection";
+   /*
+   QList<MyThread*>::iterator threadIterator;
    if ( ( threadIterator= std::find(m_listConnections.begin(),
                   m_listConnections.end(), connection) ) != m_listConnections.end() )
    {
@@ -85,6 +87,8 @@ void MyServer::removeConnection( MyThread* connection )
       delete connection;
       // find your key
    }
+   */
+   delete connection;
    m_listConnections.removeAll( connection );
 
    return;
