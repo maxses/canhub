@@ -1,4 +1,4 @@
-#ifndef CANSERVER_H
+#ifndef CANSERVER_HPP
 #define CANSERVER_H
 
 #include <QObject>
@@ -9,12 +9,12 @@
 
 class MyThread;
 
-class MyServer : //public QObject
+class CCanServer : //public QObject
                   public QTcpServer
 {
     Q_OBJECT
 public:
-    explicit MyServer(QObject *parent = 0);
+    explicit CCanServer(QObject *parent = 0);
     
 signals:
    void dataOut( const QByteArray& data, MyThread* source );
@@ -35,4 +35,4 @@ protected:
     void incomingConnection(qintptr socketDescriptor) override;
 };
 
-#endif // MYSERVER_H
+#endif // CANSERVER_HPP

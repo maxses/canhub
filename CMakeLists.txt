@@ -32,4 +32,24 @@ target_link_libraries(
    Qt${QT_VERSION}::Network
 )
 
+add_library( canclient
+   canclient.cpp
+   canclient.hpp
+)
+
+target_link_libraries(
+   canclient
+   Qt${QT_VERSION}::Network
+)
+
+add_library( candump
+   main_candump.cpp
+)
+
+target_link_libraries(
+    candump
+   canclient
+   Qt${QT_VERSION}::Network
+)
+
 #---fin------------------------------------------------------------------------

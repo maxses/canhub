@@ -1,9 +1,9 @@
-// myserver.cpp
+// CCanServer.cpp
 
 #include "canserver.hpp"
 #include "connection.hpp"
 
-MyServer::MyServer(QObject *parent) :
+CCanServer::CCanServer(QObject *parent) :
     //QObject(parent)
    QTcpServer(parent)
 {
@@ -24,11 +24,11 @@ MyServer::MyServer(QObject *parent) :
     m_heartbeatTimer.stop();
 }
 
-void MyServer::newConnection()
+void CCanServer::newConnection()
 {
 }
 
-void MyServer::incomingConnection(qintptr socketDescriptor) /* override */
+void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
 {
     /*
     QTcpSocket *socket = server->nextPendingConnection();
@@ -63,7 +63,7 @@ void MyServer::incomingConnection(qintptr socketDescriptor) /* override */
     thread->run();
 }
 
-void MyServer::heartbeat()
+void CCanServer::heartbeat()
 {
    qDebug() << "Heartbeat; " << m_listConnections.size();
    for ( auto i: m_listConnections )
@@ -75,7 +75,7 @@ void MyServer::heartbeat()
    emit( dataOut( QByteArray("   Server heartbeat\n"), nullptr ) );
 }
 
-void MyServer::removeConnection( MyThread* connection )
+void CCanServer::removeConnection( MyThread* connection )
 {
    qDebug() << "Removing connection";
    /*
@@ -94,7 +94,7 @@ void MyServer::removeConnection( MyThread* connection )
    return;
 }
 
-void MyServer::dataIn( const QByteArray& ba, MyThread* source )
+void CCanServer::dataIn( const QByteArray& ba, MyThread* source )
 {
    emit( dataOut( ba, source ) );
 }
