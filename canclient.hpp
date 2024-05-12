@@ -10,8 +10,11 @@
 class CCanClient : public QTcpSocket
 {
     Q_OBJECT
+
 public:
     explicit CCanClient(QObject *parent = 0);
+
+public slots:
     void heartbeat();
 
     

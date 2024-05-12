@@ -3,14 +3,14 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include "canserver.hpp"
+#include "canclient.hpp"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Test helper");
+    parser.setApplicationDescription("CAN Client");
     parser.addHelpOption();
     parser.addVersionOption();
 
@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
     // Process the actual command line arguments given by the user
     parser.process(app);
 
-    if( parser.isSet( oDaemon ) )
-    {
-      CCanServer mServer;
-    }
-    
+    CCanClient client;
+    client.connectToHost("ryzen", 3344);
+
+    qWarning("State: %d", client.state());
+
     return app.exec();
 }

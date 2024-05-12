@@ -42,7 +42,7 @@ target_link_libraries(
    Qt${QT_VERSION}::Network
 )
 
-add_library( candump
+add_executable( candump
    main_candump.cpp
 )
 
