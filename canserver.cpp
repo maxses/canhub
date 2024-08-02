@@ -15,14 +15,14 @@ CCanServer::CCanServer(QObject *parent) :
     {
         qDebug() << "Server could not start!";
     }
-    else
-    {
-        qDebug() << "Server started!";
-    }
+   else
+   {
+      qDebug() << "Server started; port " << CanHub::CANSERVER_DEFAULT_PORT;
+   }
 
-    connect ( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ));
-    //m_heartbeatTimer.start(1000);
-    m_heartbeatTimer.stop();
+   connect ( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ));
+   m_heartbeatTimer.start(1000);
+   //m_heartbeatTimer.stop();
 }
 
 void CCanServer::newConnection()
@@ -49,14 +49,14 @@ void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
 
     //connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
-    connect(thread, SIGNAL( deactivate( MyThread* )),
-            this, SLOT(removeConnection( MyThread* )));
+    connect(thread, SIGNAL( deactivate( CConnection* )),
+            this, SLOT(removeConnection( CConnection* )));
 
-    connect(this, SIGNAL( dataOut( const QByteArray&, MyThread* ) ),
-            thread, SLOT( dataOut( const QByteArray&, MyThread* ) ) );
+    connect(this, SIGNAL( dataOut( const QByteArray&, CConnection* ) ),
+            thread, SLOT( dataOut( const QByteArray&, CConnection* ) ) );
 
-    connect(thread, SIGNAL( dataIn( const QByteArray&, MyThread* ) ),
-            this, SLOT( dataIn( const QByteArray&, MyThread* ) ) );
+    connect(thread, SIGNAL( dataIn( const QByteArray&, CConnection* ) ),
+            this, SLOT( dataIn( const QByteArray&, CConnection* ) ) );
 
     void allOut( const QByteArray &data );
 
@@ -66,7 +66,7 @@ void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
 
 void CCanServer::heartbeat()
 {
-   qDebug() << "Heartbeat; " << m_listConnections.size();
+   qDebug() << "Heartbeat; " << m_listConnections.size() << "connections";
    for ( auto i: m_listConnections )
    {
       //i->write( QByteArray("   Server heartbeat\n") );
@@ -97,5 +97,6 @@ void CCanServer::removeConnection( CConnection* connection )
 
 void CCanServer::dataIn( const QByteArray& ba, CConnection* source )
 {
+   qDebug() << "Server data in";
    emit( dataOut( ba, source ) );
 }

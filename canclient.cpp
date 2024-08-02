@@ -14,13 +14,15 @@ CCanClient::CCanClient(QObject *parent) :
 
 void CCanClient::heartbeat()
 {
-    qWarning("Heartbeat");
-    qWarning("State: %d", state());
-    if( state() == UnconnectedState )
-    {
-        qWarning("Could not connect to server");
-        QCoreApplication::quit();
-    }
+   qWarning("Heartbeat");
+   qWarning("State: %d", state());
+   if( state() == UnconnectedState )
+   {
+      qWarning("Could not connect to server. Error: %d", error());
+      QCoreApplication::quit();
+   }
+   
+   writeData("Hello", 5);
 }
 
 

@@ -2,65 +2,56 @@
 
 #include "connection.hpp"
 
-CConnection::CConnection(int ID, QObject *parent) :
-    //QThread(parent)
-   QObject(parent)
+CConnection::CConnection(int id, QObject *parent)
+   :QObject(parent)
 {
-    this->socketDescriptor = ID;
+    m_socketDescriptor = id;
 }
 
 CConnection::~CConnection()
 {
    qDebug() << "Deleting connection";
+   m_pSocket->deleteLater();
 }
 
 void CConnection::run()
 {
     // thread starts here
-    qDebug() << socketDescriptor << " Starting thread";
-    socket = new QTcpSocket();
-    if(!socket->setSocketDescriptor(this->socketDescriptor))
+    qDebug() << m_socketDescriptor << " Starting thread";
+    m_pSocket = new QTcpSocket();
+    if( !m_pSocket->setSocketDescriptor( m_socketDescriptor ) )
     {
-        emit error(socket->error());
+        emit error(m_pSocket->error());
         return;
     }
 
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()),Qt::DirectConnection);
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()),Qt::DirectConnection);
+    connect( m_pSocket, SIGNAL(readyRead()), this, SLOT(readyRead()),Qt::DirectConnection);
+    connect( m_pSocket, SIGNAL(disconnected()), this, SLOT(disconnected()),Qt::DirectConnection);
 
-    qDebug() << socketDescriptor << " Client connected";
-
-    // make this thread a loop
-    //exec();
+    qDebug() << m_socketDescriptor << " Client connected";
 }
 
 void CConnection::readyRead()
 {
-    QByteArray data = socket->readAll();
+    QByteArray data = m_pSocket->readAll();
 
-    qDebug() << socketDescriptor << " Data in: " << data;
+    qDebug() << m_socketDescriptor << " Data in: " << data;
 
-    //socket->write(Data);
     emit( dataIn( data, this ) );
 }
 
 void CConnection::disconnected()
 {
-    qDebug() << socketDescriptor << " Disconnected";
+    qDebug() << m_socketDescriptor << " Disconnected";
+    
     emit( deactivate( this ) );
-    socket->deleteLater();
-    //exit(0);
-}
-
-void CConnection::write( const QByteArray &ba )
-{
-   socket->write( ba );
 }
 
 void CConnection::dataOut( const QByteArray& ba, CConnection* source )
 {
    if( source != this )
    {
-      socket->write( ba );
+      qDebug() << "Sending packet to Connector";
+      m_pSocket->write( ba );
    }
 }

@@ -26,11 +26,11 @@ public slots:
 public slots:
 
 private:
-    QTcpSocket *socket;
-    int socketDescriptor;
+    QTcpSocket *m_pSocket;
+    int m_socketDescriptor;
 
 public:
-    void write( const QByteArray &ba );
+    //void write( const QByteArray &ba );
 };
 
 #endif // CONNECTION_HPP

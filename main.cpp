@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     if( parser.isSet( oDaemon ) )
     {
       CCanServer mServer;
+      return app.exec();
     }
     
     return app.exec();
