@@ -4,6 +4,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include "canclient.hpp"
+#include "config.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +23,7 @@ int main(int argc, char *argv[])
     parser.process(app);
 
     CCanClient client;
-    client.connectToHost("ryzen", 3344);
+    client.connectToHost( "ryzen", CanHub::CANSERVER_DEFAULT_PORT );
 
     qWarning("State: %d", client.state());
 

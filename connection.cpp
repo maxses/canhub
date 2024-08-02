@@ -1,20 +1,20 @@
-// mythread.cpp
+// CConnection.cpp
 
 #include "connection.hpp"
 
-MyThread::MyThread(int ID, QObject *parent) :
+CConnection::CConnection(int ID, QObject *parent) :
     //QThread(parent)
    QObject(parent)
 {
     this->socketDescriptor = ID;
 }
 
-MyThread::~MyThread()
+CConnection::~CConnection()
 {
    qDebug() << "Deleting connection";
 }
 
-void MyThread::run()
+void CConnection::run()
 {
     // thread starts here
     qDebug() << socketDescriptor << " Starting thread";
@@ -34,7 +34,7 @@ void MyThread::run()
     //exec();
 }
 
-void MyThread::readyRead()
+void CConnection::readyRead()
 {
     QByteArray data = socket->readAll();
 
@@ -44,7 +44,7 @@ void MyThread::readyRead()
     emit( dataIn( data, this ) );
 }
 
-void MyThread::disconnected()
+void CConnection::disconnected()
 {
     qDebug() << socketDescriptor << " Disconnected";
     emit( deactivate( this ) );
@@ -52,12 +52,12 @@ void MyThread::disconnected()
     //exit(0);
 }
 
-void MyThread::write( const QByteArray &ba )
+void CConnection::write( const QByteArray &ba )
 {
    socket->write( ba );
 }
 
-void MyThread::dataOut( const QByteArray& ba, MyThread* source )
+void CConnection::dataOut( const QByteArray& ba, CConnection* source )
 {
    if( source != this )
    {

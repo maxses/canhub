@@ -1,27 +1,27 @@
-#ifndef MYTHREAD_H
-#define MYTHREAD_H
+#ifndef CONNECTION_HPP
+#define CONNECTION_HPP
 
 #include <QThread>
 #include <QTcpSocket>
 #include <QDebug>
 
-class MyThread : public QObject //QThread
+class CConnection : public QObject //QThread
 {
     Q_OBJECT
 public:
-    explicit MyThread(int iID, QObject *parent = 0);
-   ~MyThread();
+    explicit CConnection(int iID, QObject *parent = 0);
+   ~CConnection();
     void run();
     
 signals:
     void error(QTcpSocket::SocketError socketerror);
-    void deactivate( MyThread* );
-    void dataIn( const QByteArray&, MyThread* source );
+    void deactivate( CConnection* );
+    void dataIn( const QByteArray&, CConnection* source );
     
 public slots:
     void readyRead();
     void disconnected();
-    void dataOut( const QByteArray&, MyThread* source );
+    void dataOut( const QByteArray&, CConnection* source );
 
 public slots:
 
@@ -33,4 +33,4 @@ public:
     void write( const QByteArray &ba );
 };
 
-#endif // MYTHREAD_H
+#endif // CONNECTION_HPP

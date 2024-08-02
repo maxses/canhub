@@ -7,7 +7,7 @@
 #include <QTcpSocket>
 #include <QTimer>
 
-class MyThread;
+class CConnection;
 
 class CCanServer : //public QObject
                   public QTcpServer
@@ -17,18 +17,18 @@ public:
     explicit CCanServer(QObject *parent = 0);
     
 signals:
-   void dataOut( const QByteArray& data, MyThread* source );
+   void dataOut( const QByteArray& data, CConnection* source );
     
 public slots:
     void newConnection();
     void heartbeat();
-    void removeConnection( MyThread* );
-    void dataIn( const QByteArray&, MyThread* source );
+    void removeConnection( CConnection* );
+    void dataIn( const QByteArray&, CConnection* source );
 
 private:
     //QTcpServer *server;
     QTimer m_heartbeatTimer;
-    QList< MyThread* > m_listConnections;
+    QList< CConnection* > m_listConnections;
 
 protected:
     //void incomingConnection(int socketDescriptor);

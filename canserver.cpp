@@ -1,5 +1,6 @@
 // CCanServer.cpp
 
+#include "config.hpp"
 #include "canserver.hpp"
 #include "connection.hpp"
 
@@ -9,8 +10,8 @@ CCanServer::CCanServer(QObject *parent) :
 {
     //server = new QTcpServer(this);
     //connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
-
-    if(!this->listen(QHostAddress::Any, 1234))
+   
+   if(!this->listen( QHostAddress::Any, CanHub::CANSERVER_DEFAULT_PORT ))
     {
         qDebug() << "Server could not start!";
     }
@@ -43,7 +44,7 @@ void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
     */
 
     qDebug() << socketDescriptor << " Connecting...";
-    MyThread *thread = new MyThread(socketDescriptor, this);
+    CConnection* thread = new CConnection(socketDescriptor, this);
     m_listConnections += thread;
 
     //connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
@@ -75,7 +76,7 @@ void CCanServer::heartbeat()
    emit( dataOut( QByteArray("   Server heartbeat\n"), nullptr ) );
 }
 
-void CCanServer::removeConnection( MyThread* connection )
+void CCanServer::removeConnection( CConnection* connection )
 {
    qDebug() << "Removing connection";
    /*
@@ -94,7 +95,7 @@ void CCanServer::removeConnection( MyThread* connection )
    return;
 }
 
-void CCanServer::dataIn( const QByteArray& ba, MyThread* source )
+void CCanServer::dataIn( const QByteArray& ba, CConnection* source )
 {
    emit( dataOut( ba, source ) );
 }
