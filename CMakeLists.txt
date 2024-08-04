@@ -9,22 +9,28 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 if( NOT Qt6_FOUND )
-        find_package( Qt5 COMPONENTS Core Network REQUIRED )
-        set( QT_VERSION 5 )
-        set( QT5 Yes )
+   find_package( Qt5 COMPONENTS Core Network REQUIRED )
+   set( QT_VERSION 5 )
+   set( QT5 Yes )
 else ( NOT Qt6_FOUND )
-    set( QT_VERSION 6 )
+   set( QT_VERSION 6 )
 endif( NOT Qt6_FOUND )
 
 
 set(CMAKE_CXX_STANDARD 20)
 
+include_directories(
+   include/
+)
+
 add_executable( canserver 
-   main.cpp
-   canserver.cpp
-   canserver.hpp
-   connection.cpp
-   connection.hpp
+   src/main.cpp
+   src/canserver.cpp
+   include/canserver.hpp
+   src/connectorTcpClient.cpp
+   src/connectorTcpServer.cpp
+   include/connectorTcpClient.hpp
+   include/connectorTcpServer.hpp
 )
 
 target_link_libraries(
@@ -33,8 +39,12 @@ target_link_libraries(
 )
 
 add_library( canclient
-   canclient.cpp
-   canclient.hpp
+   src/connectorTcpClient.cpp
+   include/connectorTcpClient.hpp
+)
+
+target_include_directories(
+   canclient INTERFACE "include/"
 )
 
 target_link_libraries(
@@ -43,11 +53,11 @@ target_link_libraries(
 )
 
 add_executable( candump
-   main_candump.cpp
+   src/main_candump.cpp
 )
 
 target_link_libraries(
-    candump
+   candump
    canclient
    Qt${QT_VERSION}::Network
 )

@@ -3,7 +3,7 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include "canclient.hpp"
+#include "connectorTcpClient.hpp"
 #include "config.hpp"
 
 int main(int argc, char *argv[])
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     // Process the actual command line arguments given by the user
     parser.process(app);
 
-    CCanClient client;
+    CConnectorTcpClient client;
     client.connectToHost( "ryzen", CanHub::CANSERVER_DEFAULT_PORT );
 
     qWarning("State: %d", client.state());

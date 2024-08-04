@@ -1,20 +1,20 @@
-// CConnection.cpp
+// CConnectorTcpServer.cpp
 
-#include "connection.hpp"
+#include "connectorTcpServer.hpp"
 
-CConnection::CConnection(int id, QObject *parent)
+CConnectorTcpServer::CConnectorTcpServer(int id, QObject *parent)
    :QObject(parent)
 {
     m_socketDescriptor = id;
 }
 
-CConnection::~CConnection()
+CConnectorTcpServer::~CConnectorTcpServer()
 {
    qDebug() << "Deleting connection";
    m_pSocket->deleteLater();
 }
 
-void CConnection::run()
+void CConnectorTcpServer::run()
 {
     // thread starts here
     qDebug() << m_socketDescriptor << " Starting thread";
@@ -31,7 +31,7 @@ void CConnection::run()
     qDebug() << m_socketDescriptor << " Client connected";
 }
 
-void CConnection::readyRead()
+void CConnectorTcpServer::readyRead()
 {
     QByteArray data = m_pSocket->readAll();
 
@@ -40,14 +40,14 @@ void CConnection::readyRead()
     emit( dataIn( data, this ) );
 }
 
-void CConnection::disconnected()
+void CConnectorTcpServer::disconnected()
 {
     qDebug() << m_socketDescriptor << " Disconnected";
     
     emit( deactivate( this ) );
 }
 
-void CConnection::dataOut( const QByteArray& ba, CConnection* source )
+void CConnectorTcpServer::dataOut( const QByteArray& ba, CConnectorTcpServer* source )
 {
    if( source != this )
    {

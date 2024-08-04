@@ -1,18 +1,18 @@
 
-#include "canclient.hpp"
+#include <connectorTcpClient.hpp>
 #include <QCoreApplication>
 
-CCanClient::CCanClient(QObject *parent) :
+CConnectorTcpClient::CConnectorTcpClient(QObject *parent) :
    QTcpSocket(parent)
 {
-    qInfo ("Instantiate CCanClient");
+    qInfo ("Instantiate CConnectorTcpClient");
 
     connect ( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ));
     m_heartbeatTimer.start(2000);
 }
 
 
-void CCanClient::heartbeat()
+void CConnectorTcpClient::heartbeat()
 {
    qWarning("Heartbeat");
    qWarning("State: %d", state());

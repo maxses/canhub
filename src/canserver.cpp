@@ -2,7 +2,7 @@
 
 #include "config.hpp"
 #include "canserver.hpp"
-#include "connection.hpp"
+#include "connectorTcpServer.hpp"
 
 CCanServer::CCanServer(QObject *parent) :
     //QObject(parent)
@@ -44,19 +44,19 @@ void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
     */
 
     qDebug() << socketDescriptor << " Connecting...";
-    CConnection* thread = new CConnection(socketDescriptor, this);
+    CConnectorTcpServer* thread = new CConnectorTcpServer(socketDescriptor, this);
     m_listConnections += thread;
 
     //connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
-    connect(thread, SIGNAL( deactivate( CConnection* )),
-            this, SLOT(removeConnection( CConnection* )));
+    connect(thread, SIGNAL( deactivate( CConnectorTcpServer* )),
+            this, SLOT(removeConnection( CConnectorTcpServer* )));
 
-    connect(this, SIGNAL( dataOut( const QByteArray&, CConnection* ) ),
-            thread, SLOT( dataOut( const QByteArray&, CConnection* ) ) );
+    connect(this, SIGNAL( dataOut( const QByteArray&, CConnectorTcpServer* ) ),
+            thread, SLOT( dataOut( const QByteArray&, CConnectorTcpServer* ) ) );
 
-    connect(thread, SIGNAL( dataIn( const QByteArray&, CConnection* ) ),
-            this, SLOT( dataIn( const QByteArray&, CConnection* ) ) );
+    connect(thread, SIGNAL( dataIn( const QByteArray&, CConnectorTcpServer* ) ),
+            this, SLOT( dataIn( const QByteArray&, CConnectorTcpServer* ) ) );
 
     void allOut( const QByteArray &data );
 
@@ -76,7 +76,7 @@ void CCanServer::heartbeat()
    emit( dataOut( QByteArray("   Server heartbeat\n"), nullptr ) );
 }
 
-void CCanServer::removeConnection( CConnection* connection )
+void CCanServer::removeConnection( CConnectorTcpServer* connection )
 {
    qDebug() << "Removing connection";
    /*
@@ -95,7 +95,7 @@ void CCanServer::removeConnection( CConnection* connection )
    return;
 }
 
-void CCanServer::dataIn( const QByteArray& ba, CConnection* source )
+void CCanServer::dataIn( const QByteArray& ba, CConnectorTcpServer* source )
 {
    qDebug() << "Server data in";
    emit( dataOut( ba, source ) );
