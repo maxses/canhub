@@ -2,22 +2,19 @@
 
 #include "config.hpp"
 #include "canserver.hpp"
-#include "connectorTcpServer.hpp"
+#include <connectorTcpServer.hpp>
+#include <connectorCan.hpp>
 
-CCanServer::CCanServer(QObject *parent) :
-    //QObject(parent)
-   QTcpServer(parent)
+CCanServer::CCanServer(QObject *parent, int port)
+   :QTcpServer(parent)
 {
-    //server = new QTcpServer(this);
-    //connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
-   
-   if(!this->listen( QHostAddress::Any, CanHub::CANSERVER_DEFAULT_PORT ))
+   if(!this->listen( QHostAddress::Any, port ))
     {
         qDebug() << "Server could not start!";
     }
    else
    {
-      qDebug() << "Server started; port " << CanHub::CANSERVER_DEFAULT_PORT;
+      qDebug() << "Server started; port " << port;
    }
 
    connect ( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ));
@@ -31,72 +28,60 @@ void CCanServer::newConnection()
 
 void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
 {
-    /*
-    QTcpSocket *socket = server->nextPendingConnection();
+   qDebug() << " Connecting to incoming tcp: " << socketDescriptor;
+    CConnectorTcpServer* connector = new CConnectorTcpServer(socketDescriptor, this);
+    addConnector(connector);
+}
 
-    socket->write("hello client\r\n");
-    socket->flush();
-
-    socket->waitForBytesWritten(3000);
-
-    socket->close();
-    qDebug() << "Closing connection";
-    */
-
-    qDebug() << socketDescriptor << " Connecting...";
-    CConnectorTcpServer* thread = new CConnectorTcpServer(socketDescriptor, this);
-    m_listConnections += thread;
+void CCanServer::addConnector( CConnector* connector )
+{
+    m_listConnections += connector;
 
     //connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 
-    connect(thread, SIGNAL( deactivate( CConnectorTcpServer* )),
-            this, SLOT(removeConnection( CConnectorTcpServer* )));
+    connect(connector, SIGNAL( deactivate( CConnector* )),
+            this, SLOT(removeConnection( CConnector* )));
 
-    connect(this, SIGNAL( dataOut( const QByteArray&, CConnectorTcpServer* ) ),
-            thread, SLOT( dataOut( const QByteArray&, CConnectorTcpServer* ) ) );
+    connect(this, SIGNAL( dataOut( const SMessage&, CConnector* ) ),
+            connector, SLOT( dataOut( const SMessage&, CConnector* ) ) );
 
-    connect(thread, SIGNAL( dataIn( const QByteArray&, CConnectorTcpServer* ) ),
-            this, SLOT( dataIn( const QByteArray&, CConnectorTcpServer* ) ) );
+    connect(connector, SIGNAL( dataIn( const SMessage&, CConnector* ) ),
+            this, SLOT( dataIn( const SMessage&, CConnector* ) ) );
 
     void allOut( const QByteArray &data );
-
-    //thread->start();
-    thread->run();
 }
 
 void CCanServer::heartbeat()
 {
    qDebug() << "Heartbeat; " << m_listConnections.size() << "connections";
-   for ( auto i: m_listConnections )
-   {
-      //i->write( QByteArray("   Server heartbeat\n") );
-      // find your key
-   }
 
-   emit( dataOut( QByteArray("   Server heartbeat\n"), nullptr ) );
+#if 0
+   SMessage msg;
+   msg.eType = EType::ServerHeartbeat;
+   emit( dataOut( msg, nullptr ) );
+#endif
 }
 
-void CCanServer::removeConnection( CConnectorTcpServer* connection )
+void CCanServer::removeConnection( CConnector* connection )
 {
    qDebug() << "Removing connection";
-   /*
-   QList<MyThread*>::iterator threadIterator;
-   if ( ( threadIterator= std::find(m_listConnections.begin(),
-                  m_listConnections.end(), connection) ) != m_listConnections.end() )
-   {
-      qDebug() << "   Found it!";
-      delete connection;
-      // find your key
-   }
-   */
+   
    delete connection;
    m_listConnections.removeAll( connection );
 
    return;
 }
 
-void CCanServer::dataIn( const QByteArray& ba, CConnectorTcpServer* source )
+void CCanServer::dataIn( const SMessage& msg, CConnector* source )
 {
-   qDebug() << "Server data in";
-   emit( dataOut( ba, source ) );
+   qDebug( "Server data in from '%s'", source->getName() );
+   emit( dataOut( msg, source ) );
+}
+
+bool CCanServer::addSocketCan()
+{
+   CConnectorCan *pCan;
+   pCan=new CConnectorCan( this );
+   addConnector( pCan );
+   return( true );
 }

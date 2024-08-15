@@ -3,29 +3,46 @@
 #include <QCoreApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QLoggingCategory>
+#include "connector.hpp"
 #include "connectorTcpClient.hpp"
+#include "connectorCan.hpp"
+#include "candump.h"
 #include "config.hpp"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication app(argc, argv);
-
-    QCommandLineParser parser;
-    parser.setApplicationDescription("CAN Client");
-    parser.addHelpOption();
-    parser.addVersionOption();
-
-    // A boolean option with a single name (-p)
-    QCommandLineOption oDaemon("d", "Start server daemon");
-    parser.addOption(oDaemon);
-
-    // Process the actual command line arguments given by the user
-    parser.process(app);
-
-    CConnectorTcpClient client;
-    client.connectToHost( "ryzen", CanHub::CANSERVER_DEFAULT_PORT );
-
-    qWarning("State: %d", client.state());
-
-    return app.exec();
+   QCoreApplication app(argc, argv);
+   QCommandLineParser parser;
+   CConnector *connector;
+   
+   parser.setApplicationDescription("CAN Client");
+   parser.addHelpOption();
+   parser.addVersionOption();
+   
+   QCommandLineOption oDirect("s", "Use CAN-Adapter directly without TCP server");
+   QCommandLineOption oDebug("D", "Enable debug output");
+   parser.addOptions( { oDirect, oDebug } );
+   parser.process(app);
+   
+   qSetMessagePattern("[%{time process}] %{function}: %{message}");
+   if( ! parser.isSet(oDebug) )
+   {
+      QLoggingCategory::setFilterRules("*.debug=false");
+   }
+   
+   if( parser.isSet( oDirect ) )
+   {
+      qInfo("CANDump, direct connection" );
+      connector = new CConnectorCan( &app );
+   }
+   else
+   {
+      qInfo("CANDump, TCP connection" );
+      connector = new CConnectorTcpClient( &app ) ;
+   }
+   
+   CCanDump* dump=new CCanDump( connector, &app );
+   
+   return app.exec();
 }

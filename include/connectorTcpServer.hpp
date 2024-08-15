@@ -1,27 +1,31 @@
 #ifndef CONNECTOR_TCP_SERVER_HPP
 #define CONNECTOR_TCP_SERVER_HPP
 
-#include <QThread>
 #include <QTcpSocket>
-#include <QDebug>
+#include <connector.hpp>
 
-class CConnectorTcpServer : public QObject
+class CConnectorTcpServer : public CConnector
 {
-    Q_OBJECT
+   Q_OBJECT
+   
 public:
-    explicit CConnectorTcpServer(int iID, QObject *parent = 0);
+   explicit CConnectorTcpServer(int iID, QObject *parent = 0);
    ~CConnectorTcpServer();
-    void run();
+   void connectSocket();
+   const char* getName() override { return("TCP Server to client connection"); };
     
 signals:
+    
+    //void deactivate( CConnector* );
+    /*
     void error(QTcpSocket::SocketError socketerror);
-    void deactivate( CConnectorTcpServer* );
-    void dataIn( const QByteArray&, CConnectorTcpServer* source );
+   */
+    //void dataIn( const QByteArray&, CConnectorTcpServer* source );
     
 public slots:
     void readyRead();
     void disconnected();
-    void dataOut( const QByteArray&, CConnectorTcpServer* source );
+    virtual void dataOut( const SMessage&, CConnector* source ) override;
 
 public slots:
 

@@ -23,24 +23,17 @@ include_directories(
    include/
 )
 
-add_executable( canserver 
-   src/main.cpp
-   src/canserver.cpp
-   include/canserver.hpp
-   src/connectorTcpClient.cpp
-   src/connectorTcpServer.cpp
-   include/connectorTcpClient.hpp
-   include/connectorTcpServer.hpp
-)
-
-target_link_libraries(
-   canserver
-   Qt${QT_VERSION}::Network
-)
-
 add_library( canclient
+   src/canserver.cpp
+   src/connector.cpp
    src/connectorTcpClient.cpp
+   src/connectorCan.cpp
+   include/connector.hpp
    include/connectorTcpClient.hpp
+   include/connectorCan.hpp
+   include/canserver.hpp
+   src/connectorTcpServer.cpp
+   include/connectorTcpServer.hpp
 )
 
 target_include_directories(
@@ -52,14 +45,28 @@ target_link_libraries(
    Qt${QT_VERSION}::Network
 )
 
+add_executable( 
+   canserver 
+   src/main.cpp
+)
+
+target_link_libraries(
+   canserver
+   canclient
+)
+
 add_executable( candump
+   include/candump.h
+   src/candump.cpp
    src/main_candump.cpp
 )
 
 target_link_libraries(
    candump
    canclient
-   Qt${QT_VERSION}::Network
 )
+
+add_subdirectory( tests )
+
 
 #---fin------------------------------------------------------------------------

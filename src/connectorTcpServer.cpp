@@ -3,9 +3,10 @@
 #include "connectorTcpServer.hpp"
 
 CConnectorTcpServer::CConnectorTcpServer(int id, QObject *parent)
-   :QObject(parent)
+   :CConnector(parent)
 {
     m_socketDescriptor = id;
+   connectSocket();
 }
 
 CConnectorTcpServer::~CConnectorTcpServer()
@@ -14,14 +15,15 @@ CConnectorTcpServer::~CConnectorTcpServer()
    m_pSocket->deleteLater();
 }
 
-void CConnectorTcpServer::run()
+void CConnectorTcpServer::connectSocket()
 {
     // thread starts here
-    qDebug() << m_socketDescriptor << " Starting thread";
+    qDebug() << m_socketDescriptor << " Connecting socket";
     m_pSocket = new QTcpSocket();
     if( !m_pSocket->setSocketDescriptor( m_socketDescriptor ) )
     {
-        emit error(m_pSocket->error());
+        //emit error(m_pSocket->error());
+       qWarning("Can not connect");
         return;
     }
 
@@ -36,22 +38,24 @@ void CConnectorTcpServer::readyRead()
     QByteArray data = m_pSocket->readAll();
 
     qDebug() << m_socketDescriptor << " Data in: " << data;
+    SMessage* pMsg( (SMessage*)data.data() );
 
-    emit( dataIn( data, this ) );
+    emit( dataIn( *pMsg, this ) );
 }
 
 void CConnectorTcpServer::disconnected()
 {
-    qDebug() << m_socketDescriptor << " Disconnected";
-    
-    emit( deactivate( this ) );
+   qDebug() << m_socketDescriptor << " Disconnected";
+   
+   emit( deactivate( this ) );
 }
 
-void CConnectorTcpServer::dataOut( const QByteArray& ba, CConnectorTcpServer* source )
+void CConnectorTcpServer::dataOut( const SMessage& msg, CConnector* source )
 {
    if( source != this )
    {
       qDebug() << "Sending packet to Connector";
+      QByteArray ba( (char*)&msg, sizeof msg);
       m_pSocket->write( ba );
    }
 }
