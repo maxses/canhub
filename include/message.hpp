@@ -26,7 +26,13 @@ struct SMessage
       eType=EType::Unknown;
       length=0;
    }
-   
+   SMessage(int _id, int _length, char* _data)
+   {
+      eType=EType::Message;
+      setId(_id);
+      setData(_length, _data);
+   }
+
    void setId(int _id)
    {
       id = _id;

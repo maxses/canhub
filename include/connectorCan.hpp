@@ -38,11 +38,6 @@ class CConnectorCan
       void reconnect();
       void checkConnection();
       virtual void dataOut( const SMessage&, CConnector* source ) override;
-
-signals:
-      //void gotMessage(const CCanMessage &message);
-      void connectionChanged(bool connection);
-      //void dataIn( const SMessage&, CConnector* source );
 };
 
 

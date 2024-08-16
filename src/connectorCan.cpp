@@ -208,7 +208,7 @@ void CConnectorCan::dataOut( const SMessage& msg, CConnector* source )
 {
    if( source != this )
    {
-      qDebug( "CAN: Data out: Type=%d", msg.eType );
+      qDebug( "CAN: Data out: Type=%d", (int)msg.eType );
       struct can_frame frame;
       
       // 11-Bit-Identifier, "Base frame format" (CAN 2.0A)

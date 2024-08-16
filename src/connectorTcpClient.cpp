@@ -41,7 +41,7 @@ void CConnectorTcpClient::readyRead()
 {
    QByteArray data = m_socket.readAll();
    
-   qDebug() << " Client data in: " << data;
+   qDebug() << " Client data in: " << data.size() << "Bytes";
    SMessage* pMsg( (SMessage*)data.data() );
    
    emit( dataIn( *pMsg, this ) );
