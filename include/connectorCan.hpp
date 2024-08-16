@@ -32,7 +32,8 @@ class CConnectorCan
       virtual const char* getInterface() { return( qPrintable(m_interface) ); };
 
    public slots:
-      void readyReadSlot(QSocketDescriptor socket, QSocketNotifier::Type type);
+      //void readyReadSlot(QSocketDescriptor socket, QSocketNotifier::Type type);
+      void readyReadSlot( int socket );
       void disconnect();
       void reconnect();
       void checkConnection();

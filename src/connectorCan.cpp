@@ -19,6 +19,7 @@
 #include <sys/socket.h>          // PF_CAN
 #include <linux/can/netlink.h>   // can_bittiming
 #include <signal.h>              // signal()
+#include <unistd.h>           // close()
 
 #include <connectorCan.hpp>
 
@@ -93,24 +94,28 @@ void CConnectorCan::connectCan()
 
    m_socketNotifier=new QSocketNotifier(skt, QSocketNotifier::Read );
 
-   connect ( m_socketNotifier, SIGNAL( activated(QSocketDescriptor,QSocketNotifier::Type) ), this, SLOT( readyReadSlot(QSocketDescriptor,QSocketNotifier::Type) ) );
+   connect ( m_socketNotifier, SIGNAL( activated( int ) ), this, SLOT( readyReadSlot( int ) ) );
    m_connected = true;
    emit( connectionChanged(true) );
 }
 
-
+#if 0
 void CConnectorCan::readyReadSlot(QSocketDescriptor socket, QSocketNotifier::Type type)
+#endif
+void CConnectorCan::readyReadSlot( int socket )
 {
    struct can_frame frame;
    SMessage msg;
    
    qDebug("CAN: data in");
    
+#if 0
    if( type != QSocketNotifier::Type::Read )
    {
       qWarning("Unknown type: %d", (int)type );
       return;
    }
+#endif
 
    int bytes_read = read( skt, (char *)&frame, sizeof(frame) );
    
