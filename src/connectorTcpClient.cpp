@@ -34,6 +34,11 @@ void CConnectorTcpClient::heartbeat()
    {
       qWarning("Not connect to server. Error: %d; reconnect", m_socket.error());
       m_socket.connectToHost( m_host, m_port );
+      emit ( connectionChanged( false ) );
+   }
+   else
+   {
+      emit ( connectionChanged( true ) );
    }
 }
 

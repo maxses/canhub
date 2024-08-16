@@ -199,6 +199,11 @@ void CConnectorCan::checkConnection()
    if(!getConnectionStatus())
    {
       connectCan();
+      emit(connectionChanged(false));
+   }
+   else
+   {
+      emit(connectionChanged(true));
    }
    
 }

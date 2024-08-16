@@ -20,6 +20,7 @@ class CCanDump: QObject
        
    signals:
       void signalDataIn( const SMessage& msg, CANHub::CConnector* source );
+      void signalConnectionChanged( bool connected );
 };
 
 #endif // CANDUMP_HPP

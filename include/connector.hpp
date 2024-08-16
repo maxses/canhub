@@ -27,6 +27,7 @@ public:
 signals:
    void deactivate( CANHub::CConnector* );
    void dataIn( const SMessage& msg, CANHub::CConnector* source );
+   void connectionChanged( bool connected );
 
 public slots:
    virtual void dataOut( const SMessage&, CANHub::CConnector* source ) = 0;
