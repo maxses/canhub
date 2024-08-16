@@ -17,26 +17,26 @@ class CCanServer
    Q_OBJECT
 
 public:
-   explicit CCanServer(QObject *parent = 0, int port = CanHub::CANSERVER_DEFAULT_PORT );
+   explicit CCanServer(QObject *parent = 0, int port = CANHub::CANSERVER_DEFAULT_PORT );
 
 signals:
-   void dataOut( const SMessage& msg, CConnector* source );
+   void dataOut( const SMessage& msg, CANHub::CConnector* source );
 
 public slots:
    void newConnection();
    void heartbeat();
-   void removeConnection( CConnector* );
-   void dataIn( const SMessage& msg, CConnector* source );
+   void removeConnection( CANHub::CConnector* );
+   void dataIn( const SMessage& msg, CANHub::CConnector* source );
 
 private:
    //QTcpServer *server;
    QTimer m_heartbeatTimer;
-   QList< CConnector* > m_listConnections;
+   QList< CANHub::CConnector* > m_listConnections;
 
 protected:
    //void incomingConnection(int socketDescriptor);
    void incomingConnection(qintptr socketDescriptor) override;
-   void addConnector( CConnector* connector );
+   void addConnector( CANHub::CConnector* connector );
 
 public:
    bool addSocketCan();

@@ -2,6 +2,9 @@
 
 #include "connectorTcpServer.hpp"
 
+namespace CANHub
+{
+
 CConnectorTcpServer::CConnectorTcpServer(int id, QObject *parent)
    :CConnector(parent)
 {
@@ -59,3 +62,6 @@ void CConnectorTcpServer::dataOut( const SMessage& msg, CConnector* source )
       m_pSocket->write( ba );
    }
 }
+
+} // namespace CANHub
+

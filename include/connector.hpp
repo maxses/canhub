@@ -11,6 +11,9 @@
 #include <QObject>
 #include <message.hpp>
 
+namespace CANHub
+{
+
 class CConnector : public QObject
 {
    Q_OBJECT
@@ -21,11 +24,13 @@ public:
    virtual const char* getName() = 0;
 
 signals:
-   void deactivate( CConnector* );
-   void dataIn( const SMessage& msg, CConnector* source );
+   void deactivate( CANHub::CConnector* );
+   void dataIn( const SMessage& msg, CANHub::CConnector* source );
 
 public slots:
-   virtual void dataOut( const SMessage&, CConnector* source ) = 0;
+   virtual void dataOut( const SMessage&, CANHub::CConnector* source ) = 0;
 };
+
+}
 
 #endif // CONNECTOR_HPP

@@ -3,6 +3,8 @@
 #include <QCoreApplication>
 #include "config.hpp"
 
+namespace CANHub
+{
 
 CConnectorTcpClient::CConnectorTcpClient( QObject *parent, const char* host, int port )
    :m_socket( this )
@@ -55,3 +57,4 @@ void CConnectorTcpClient::dataOut( const SMessage& msg, CConnector* source )
    }
 }
 
+} // namespace CANHub

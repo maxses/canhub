@@ -29,26 +29,22 @@ void CCanServer::newConnection()
 void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
 {
    qDebug() << " Connecting to incoming tcp: " << socketDescriptor;
-    CConnectorTcpServer* connector = new CConnectorTcpServer(socketDescriptor, this);
-    addConnector(connector);
+   CANHub::CConnectorTcpServer* connector = new CANHub::CConnectorTcpServer(socketDescriptor, this);
+   addConnector(connector);
 }
 
-void CCanServer::addConnector( CConnector* connector )
+void CCanServer::addConnector( CANHub::CConnector* connector )
 {
     m_listConnections += connector;
 
-    //connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    connect(connector, SIGNAL( deactivate( CANHub::CConnector* )),
+            this, SLOT(removeConnection( CANHub::CConnector* )));
 
-    connect(connector, SIGNAL( deactivate( CConnector* )),
-            this, SLOT(removeConnection( CConnector* )));
+    connect(this, SIGNAL( dataOut( const SMessage&, CANHub::CConnector* ) ),
+            connector, SLOT( dataOut( const SMessage&, CANHub::CConnector* ) ) );
 
-    connect(this, SIGNAL( dataOut( const SMessage&, CConnector* ) ),
-            connector, SLOT( dataOut( const SMessage&, CConnector* ) ) );
-
-    connect(connector, SIGNAL( dataIn( const SMessage&, CConnector* ) ),
-            this, SLOT( dataIn( const SMessage&, CConnector* ) ) );
-
-    void allOut( const QByteArray &data );
+    connect(connector, SIGNAL( dataIn( const SMessage&, CANHub::CConnector* ) ),
+            this, SLOT( dataIn( const SMessage&, CANHub::CConnector* ) ) );
 }
 
 void CCanServer::heartbeat()
@@ -62,7 +58,7 @@ void CCanServer::heartbeat()
 #endif
 }
 
-void CCanServer::removeConnection( CConnector* connection )
+void CCanServer::removeConnection( CANHub::CConnector* connection )
 {
    qDebug() << "Removing connection";
    
@@ -72,7 +68,7 @@ void CCanServer::removeConnection( CConnector* connection )
    return;
 }
 
-void CCanServer::dataIn( const SMessage& msg, CConnector* source )
+void CCanServer::dataIn( const SMessage& msg, CANHub::CConnector* source )
 {
    qDebug( "Server data in from '%s'", source->getName() );
    emit( dataOut( msg, source ) );
@@ -80,8 +76,8 @@ void CCanServer::dataIn( const SMessage& msg, CConnector* source )
 
 bool CCanServer::addSocketCan()
 {
-   CConnectorCan *pCan;
-   pCan=new CConnectorCan( this );
+   CANHub::CConnectorCan *pCan;
+   pCan=new CANHub::CConnectorCan( this, interface );
    addConnector( pCan );
    return( true );
 }

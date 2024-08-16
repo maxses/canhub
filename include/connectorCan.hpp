@@ -6,8 +6,8 @@
 #include <connector.hpp>
 #include <message.hpp>
 
-int socketCan();
 
+namespace CANHub {
 
 class CConnectorCan
       :public CConnector
@@ -42,6 +42,8 @@ signals:
       //void dataIn( const SMessage&, CConnector* source );
 };
 
+
+} // namespace CANHub
 
 
 #endif // CONNECTOR_CAN_HPP

@@ -29,11 +29,14 @@
 //---Implementation------------------------------------------------------------
 
 
+namespace CANHub {
+
 CTestConnector::CTestConnector( QObject *parent )
    :CConnectorTcpClient( parent, "localhost", CANHub::CANSERVER_UNITTEST_PORT )
 {
-   bool success = connect( m_connector, SIGNAL( dataIn( const SMessage&, CConnector* ) ),
-                          this, SLOT( slotDataIn( const SMessage&, CConnector* ) ),Qt::DirectConnection );
+   bool success = connect(
+         this, SIGNAL( dataIn( const SMessage&, CANHub::CConnector* ) ),
+         this, SLOT( slotVerifyDataIn( const SMessage&, CANHub::CConnector* ) ),Qt::DirectConnection );
    Q_ASSERT(success);
    
    return;
@@ -63,6 +66,8 @@ void CTestConnector::slotDataIn( const SMessage& msg, CConnector* source )
    m_total+=msg.getLen();
    printf("\n");
 }
+
+} // namespace CANHub
 
 
 //---fin-----------------------------------------------------------------------

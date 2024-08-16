@@ -27,6 +27,8 @@
 //---Implementation------------------------------------------------------------
 
 
+namespace CANHub {
+
 class CTestConnector: public CConnectorTcpClient
 {
    Q_OBJECT
@@ -57,10 +59,11 @@ class CTestConnector: public CConnectorTcpClient
       }
    
    public slots:
-      void slotDataIn( const SMessage& msg, CConnector* source );
+      void slotVerifyDataIn( const SMessage& msg, CANHub::CConnector* source );
    
    private:
 };
 
+} // namespace CANHub
 
 //---fin-----------------------------------------------------------------------

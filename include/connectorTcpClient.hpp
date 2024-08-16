@@ -8,6 +8,7 @@
 #include <connector.hpp>
 #include "config.hpp"
 
+namespace CANHub {
 
 class CConnectorTcpClient : public CConnector
 {
@@ -19,7 +20,7 @@ private:
    int m_port;
 
 public:
-   explicit CConnectorTcpClient( QObject *parent = 0, const char* host = "localhost", int port = CanHub::CANSERVER_DEFAULT_PORT );
+   explicit CConnectorTcpClient( QObject *parent = 0, const QString = "localhost", int port = CANHub::CANSERVER_DEFAULT_PORT );
    const char* getName() override { return("TCP client to server connection"); };
 
 public slots:
@@ -31,5 +32,7 @@ public slots:
 private:
    QTimer m_heartbeatTimer;
 };
+
+} // namespace CANHub
 
 #endif // CONNECTOR_TCP_CLIENT_HPP

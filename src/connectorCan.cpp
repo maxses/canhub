@@ -31,6 +31,8 @@ void sigpipe_handler(int value)
    qWarning("SIGPIPE caught; %d", value);
 }
 
+namespace CANHub
+{
 
 CConnectorCan::CConnectorCan( QObject *parent )
    :CConnector( parent)
@@ -220,5 +222,6 @@ void CConnectorCan::dataOut( const SMessage& msg, CConnector* source )
    }
 }
 
+} // namespace CANHub
 
 //---fin----------------------------------------------------------------------

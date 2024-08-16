@@ -10,16 +10,16 @@ class CCanDump: QObject
    Q_OBJECT
 
    public:
-      explicit CCanDump( CConnector* connector, QObject *parent = 0 );
+      explicit CCanDump( QObject *parent = 0, CANHub::CConnector* connector = 0 );
       
    public slots:
-      void slotDataIn( const SMessage& msg, CConnector* source );
+      void slotDataIn( const SMessage& msg, CANHub::CConnector* source );
 
    private:
-      CConnector* m_connector;
+      CANHub::CConnector* m_connector;
        
    signals:
-      void signalDataIn( const SMessage& msg, CConnector* source );
+      void signalDataIn( const SMessage& msg, CANHub::CConnector* source );
 };
 
 #endif // CANDUMP_HPP

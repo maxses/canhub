@@ -14,15 +14,15 @@ int main(int argc, char *argv[])
 {
    QCoreApplication app(argc, argv);
    QCommandLineParser parser;
-   CConnector *connector;
+   CANHub::CConnector *connector;
    
    parser.setApplicationDescription("CAN Client");
    parser.addHelpOption();
    parser.addVersionOption();
    
-   QCommandLineOption oDirect("s", "Use CAN-Adapter directly without TCP server");
    QCommandLineOption oDebug("D", "Enable debug output");
    parser.addOptions( { oDirect, oDebug } );
+   QCommandLineOption oInterface("i", "Use CAN-Adapter <interface> directly without TCP server", "interface");
    parser.process(app);
    
    qSetMessagePattern("[%{time process}] %{function}: %{message}");
@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
       QLoggingCategory::setFilterRules("*.debug=false");
    }
    
-   if( parser.isSet( oDirect ) )
+   if( parser.isSet( oInterface ) )
    {
       qInfo("CANDump, direct connection" );
-      connector = new CConnectorCan( &app );
+      connector = new CANHub::CConnectorCan( &app, parser.value( oInterface ) );
    }
    else
    {

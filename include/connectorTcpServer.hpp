@@ -4,6 +4,8 @@
 #include <QTcpSocket>
 #include <connector.hpp>
 
+namespace CANHub{
+
 class CConnectorTcpServer : public CConnector
 {
    Q_OBJECT
@@ -33,5 +35,7 @@ private:
     QTcpSocket *m_pSocket;
     int m_socketDescriptor;
 };
+
+} // namespace CANHub
 
 #endif // CONNECTOR_TCP_SERVER_HPP
