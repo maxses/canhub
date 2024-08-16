@@ -2,9 +2,11 @@
 #define CONNECTOR_HPP
 /**
  * 
- *       Connector           CanServer
- *       emit dataIn   ->    slot dataIn
- *       emit dataIn   ->    slot dataIn
+ *       Connector
+ *       signal dataIn     Emit this whenever data was received. Application
+ *                         can handle this.
+ *       slot dataOut      implement how to send messages physically;
+ *                         Don't send if you are the source itself
  * 
  **/
 

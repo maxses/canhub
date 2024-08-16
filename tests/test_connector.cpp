@@ -2,7 +2,13 @@
 ///
 /// \file   test_connector.hpp
 ///
-/// \brief  main file for canserver
+/// \brief  Test connector for CANHub
+///
+///         The test counter is needed for unit tests.
+///         The test connector can be configured to expect specific data from
+///         the CAN-server. When the connector receives data, it checks if the
+///         data matches the expected data. According to the result it increases
+///         an good- or bad-counter.
 ///
 /// \date   20240813
 /// \author Maximilian Seesslen <mes@seesslen.net>
