@@ -45,7 +45,8 @@
 
 
 int argc=1;
-char* argv[]{"foo"};
+char arg0[]{'A',0};
+char* argv[]{ arg0 };
 
 struct SPattern
 {
@@ -77,15 +78,11 @@ TEST_CASE( "Routing", "[default]" )
    
    SECTION( "Routing" )
    {
-      CCanServer canServer( &app, CanHub::CANSERVER_DEFAULT_PORT + 1 );
+      CCanServer canServer( &app, CANHub::CANSERVER_DEFAULT_PORT + 1 );
+      CANHub::CTestConnector connectorA( &canServer );
+      CANHub::CTestConnector connectorB( &canServer );
 
-      CConnectorTcpClient* connectorTcpA = new CConnectorTcpClient( &app, "localhost", CanHub::CANSERVER_DEFAULT_PORT + 1 ) ;
-      CConnectorTcpClient* connectorTcpB = new CConnectorTcpClient( &app, "localhost", CanHub::CANSERVER_DEFAULT_PORT + 1 ) ;
-      
-      CTestConnector connectorA(connectorTcpA, &canServer);
-      CTestConnector connectorB(connectorTcpB, &canServer);
-      
-      CTestConnector* connectors[2]{ &connectorA, &connectorB };
+      CANHub::CTestConnector* connectors[2]{ &connectorA, &connectorB };
       
       SMessage msg;
       char buf[64];

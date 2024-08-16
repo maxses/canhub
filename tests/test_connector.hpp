@@ -27,7 +27,7 @@
 //---Implementation------------------------------------------------------------
 
 
-class CTestConnector: QObject
+class CTestConnector: public CConnectorTcpClient
 {
    Q_OBJECT
    
@@ -38,11 +38,7 @@ class CTestConnector: QObject
       int m_bad=0;
       
    public:
-      explicit CTestConnector( CConnector* connector, QObject *parent = 0 );
-      void dataOut( const SMessage& msg, CConnector* source )
-      {
-         m_connector->dataOut( msg, source );
-      };
+      explicit CTestConnector( QObject *parent = 0 );
       int getTotal()
       {
          return(m_total);
@@ -64,10 +60,6 @@ class CTestConnector: QObject
       void slotDataIn( const SMessage& msg, CConnector* source );
    
    private:
-      CConnector* m_connector;
-   
-   signals:
-      void signalDataIn( const SMessage& msg, CConnector* source );
 };
 
 
