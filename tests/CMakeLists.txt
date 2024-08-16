@@ -34,7 +34,7 @@ add_executable( tests
 
 target_link_libraries(
    tests
-   canclient
+   canhub
    ${CATCH_LIBRARY}
 )
 
