@@ -34,11 +34,12 @@ void sigpipe_handler(int value)
 namespace CANHub
 {
 
-CConnectorCan::CConnectorCan( QObject *parent )
-   :CConnector( parent)
-   ,m_socketNotifier(nullptr)
-   ,m_connected(false)
-   ,skt(0)
+CConnectorCan::CConnectorCan( QObject *parent, const QString interface )
+   :CConnector( parent )
+   ,m_socketNotifier( nullptr )
+   ,m_interface( interface )
+   ,m_connected( false )
+   ,skt( 0 )
 {
    connectCan();
    
@@ -46,7 +47,6 @@ CConnectorCan::CConnectorCan( QObject *parent )
    m_checkTimer.start(1000);
    
    signal(SIGPIPE,sigpipe_handler);
-   
 }
 
 
@@ -66,7 +66,7 @@ void CConnectorCan::connectCan()
    /* Locate the interface you wish to use */
    struct ifreq ifr;
 
-   strcpy(ifr.ifr_name, "can0");
+   strcpy(ifr.ifr_name, qPrintable( m_interface ));
    sta=ioctl(skt, SIOCGIFINDEX, &ifr); /* ifr.ifr_ifindex gets filled
                                   * with that device's index */
    if(sta<0)

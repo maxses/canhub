@@ -6,7 +6,7 @@
 namespace CANHub
 {
 
-CConnectorTcpClient::CConnectorTcpClient( QObject *parent, const char* host, int port )
+CConnectorTcpClient::CConnectorTcpClient( QObject *parent, const QString host, int port )
    :m_socket( this )
    ,m_host(host)
    ,m_port(port)

@@ -22,6 +22,7 @@ private:
 public:
    explicit CConnectorTcpClient( QObject *parent = 0, const QString = "localhost", int port = CANHub::CANSERVER_DEFAULT_PORT );
    const char* getName() override { return("TCP client to server connection"); };
+   virtual const char* getInterface() override { return( "TCP-C" ); };
 
 public slots:
    void heartbeat();

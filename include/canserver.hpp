@@ -39,7 +39,7 @@ protected:
    void addConnector( CANHub::CConnector* connector );
 
 public:
-   bool addSocketCan();
+   bool addSocketCan(const QString interface = "can0" );
 };
 
 #endif // CANSERVER_HPP

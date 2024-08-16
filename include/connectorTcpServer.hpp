@@ -15,6 +15,7 @@ public:
    ~CConnectorTcpServer();
    void connectSocket();
    const char* getName() override { return("TCP Server to client connection"); };
+   const char* getInterface() override { return("TCP-S"); };
     
 signals:
     

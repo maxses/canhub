@@ -22,6 +22,7 @@ public:
    explicit CConnector( QObject *parent = 0 );
    ~CConnector();
    virtual const char* getName() = 0;
+   virtual const char* getInterface() = 0;
 
 signals:
    void deactivate( CANHub::CConnector* );

@@ -19,7 +19,6 @@ CCanServer::CCanServer(QObject *parent, int port)
 
    connect ( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ));
    m_heartbeatTimer.start(1000);
-   //m_heartbeatTimer.stop();
 }
 
 void CCanServer::newConnection()
@@ -74,7 +73,7 @@ void CCanServer::dataIn( const SMessage& msg, CANHub::CConnector* source )
    emit( dataOut( msg, source ) );
 }
 
-bool CCanServer::addSocketCan()
+bool CCanServer::addSocketCan(const QString interface )
 {
    CANHub::CConnectorCan *pCan;
    pCan=new CANHub::CConnectorCan( this, interface );
