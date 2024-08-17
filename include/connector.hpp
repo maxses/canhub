@@ -20,11 +20,18 @@ class CConnector : public QObject
 {
    Q_OBJECT
    
+protected:
+   QString m_name;
+   QString m_interface;
+   
 public:
    explicit CConnector( QObject *parent = 0 );
    ~CConnector();
-   virtual const char* getName() = 0;
-   virtual const char* getInterface() = 0;
+   //virtual const QString& getName() const = 0;
+   //virtual const QString& getInterface() const = 0;
+   const QString& getName() const { return(m_name); };
+   const QString& getInterface() const { return( m_interface ); };
+   
 
 signals:
    void deactivate( CANHub::CConnector* );

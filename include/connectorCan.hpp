@@ -16,11 +16,10 @@ class CConnectorCan
 
    private:
       QSocketNotifier *m_socketNotifier;
-      QString m_interface;
       QTimer m_checkTimer;
       int skt;
       bool m_connected;
-
+      
    public:
       CConnectorCan( QObject *parent, const QString interface );
       void connectCan();
@@ -28,11 +27,8 @@ class CConnectorCan
       {
          return(m_connected);
       }
-      const char* getName() override { return("Socket-CAN Adapter"); };
-      virtual const char* getInterface() { return( qPrintable(m_interface) ); };
 
    public slots:
-      //void readyReadSlot(QSocketDescriptor socket, QSocketNotifier::Type type);
       void readyReadSlot( int socket );
       void disconnect();
       void reconnect();

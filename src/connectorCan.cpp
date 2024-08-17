@@ -38,10 +38,11 @@ namespace CANHub
 CConnectorCan::CConnectorCan( QObject *parent, const QString interface )
    :CConnector( parent )
    ,m_socketNotifier( nullptr )
-   ,m_interface( interface )
    ,m_connected( false )
    ,skt( 0 )
 {
+   m_interface=interface;
+   m_name="Socket-CAN Adapter";
    connectCan();
    
    connect( &m_checkTimer, SIGNAL( timeout() ), this, SLOT( checkConnection() ) );

@@ -8,7 +8,9 @@ namespace CANHub
 CConnectorTcpServer::CConnectorTcpServer(int id, QObject *parent)
    :CConnector(parent)
 {
-    m_socketDescriptor = id;
+   m_name="TCP Server to client connection";
+   m_interface="TCP-S";
+   m_socketDescriptor = id;
    connectSocket();
 }
 

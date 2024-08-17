@@ -11,6 +11,8 @@ CConnectorTcpClient::CConnectorTcpClient( QObject *parent, const QString host, i
    ,m_host(host)
    ,m_port(port)
 {
+   m_name="TCP client to server connection";
+   m_interface="TCP-C";
    qDebug ("Instantiate CConnectorTcpClient");
    
    connect( &m_socket, SIGNAL(readyRead()), this, SLOT(readyRead()),Qt::DirectConnection );

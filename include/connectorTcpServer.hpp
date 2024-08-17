@@ -6,6 +6,7 @@
 
 namespace CANHub{
 
+
 class CConnectorTcpServer : public CConnector
 {
    Q_OBJECT
@@ -14,16 +15,6 @@ public:
    explicit CConnectorTcpServer(int iID, QObject *parent = 0);
    ~CConnectorTcpServer();
    void connectSocket();
-   const char* getName() override { return("TCP Server to client connection"); };
-   const char* getInterface() override { return("TCP-S"); };
-    
-signals:
-    
-    //void deactivate( CConnector* );
-    /*
-    void error(QTcpSocket::SocketError socketerror);
-   */
-    //void dataIn( const QByteArray&, CConnectorTcpServer* source );
     
 public slots:
     void readyRead();
