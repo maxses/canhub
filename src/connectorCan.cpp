@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 ///
-/// \brief  Socket-Can connector for CANServer
+/// \brief  Socket-Can connector for CANHub
 ///
 ///         USB CAN Adapter
 ///

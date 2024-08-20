@@ -1,16 +1,18 @@
-CANServer is an server-client apllication for distributing CAN messages via ethernet.
-There is one central server application with optiona real CAN interface.
+# CANHub
 
-Multiple clients can connect to server to send and receive CAN messages. Each client
-receives messages from other clients.
+CANHub is an server-client apllication/library for distributing CAN messages via ethernet.
+There is one central server application with optional real CAN interface.
 
-Configure CAN
+Multiple clients can connect to the server to send and receive CAN messages. Each client
+also receives messages from other clients.
 
-enable the service:
+# Configure CAN
+
+Enable the service:
 $ systemctl enable systemd-networkd
 $ systemctl start systemd-networkd
 
-check configuration:
+Check configuration:
 $ ip -detail link show dev can0
 
 # Test
@@ -27,5 +29,3 @@ Send an TDT message
 
 cansend vcan0 419#18.04.14.00.90.0C.00.00
 
-
-#---

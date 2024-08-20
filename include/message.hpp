@@ -1,5 +1,5 @@
-#ifndef CANSERVER_MESSAGE_HPP
-#define CANSERVER_MESSAGE_HPP
+#ifndef CANHUB_MESSAGE_HPP
+#define CANHUB_MESSAGE_HPP
 
 #include <QtGlobal>
 
@@ -68,4 +68,4 @@ struct SMessage
 
 //static_asser( sizeof(SMessage) == 64+16, "Size missmatch");
 
-#endif // CANSERVER_MESSAGE_HPP
+#endif // CANHUB_MESSAGE_HPP
