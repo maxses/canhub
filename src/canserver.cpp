@@ -69,7 +69,7 @@ void CCanServer::removeConnection( CANHub::CConnector* connection )
 
 void CCanServer::dataIn( const SMessage& msg, CANHub::CConnector* source )
 {
-   qDebug( "Server data in from '%s'", source->getName() );
+   qDebug( "Server data in from '%s'", qPrintable(source->getName()) );
    emit( dataOut( msg, source ) );
 }
 

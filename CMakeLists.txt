@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required( VERSION 3.10 )
 
-project(canhub LANGUAGES CXX VERSION 1.0.1)
+project( canhub LANGUAGES CXX VERSION 1.0.1 )
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 find_package( QT NAMES Qt5 Qt6 COMPONENTS Core Network REQUIRED )
 find_package( Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network )
 
-set(CMAKE_CXX_STANDARD 20)
+set( CMAKE_CXX_STANDARD 20 )
 
 include_directories(
    include/
