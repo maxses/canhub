@@ -1,22 +1,19 @@
-//----------------------------------------------------------------------------
-///
-/// \file   main.cpp
-///
-/// \brief  main file for canserver
-///
-/// \date   20240813
-/// \author Maximilian Seesslen <mes@seesslen.net>
-///
-//----------------------------------------------------------------------------
+/**---------------------------------------------------------------------------
+ *
+ * @file       test_routing.cpp
+ * @brief      unit tests for canserver routing
+ *
+ *             Check if all connectors are receiving the data which is expected
+ *
+ * @date       20240813
+ * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @copyright  SPDX-License-Identifier: Apache-2.0
+ *
+ *---------------------------------------------------------------------------*/
 
 
-//---Documentation------------------------------------------------------------
+/*--- Header ----------------------------------------------------------------*/
 
-
-//---Includes -----------------------------------------------------------------
-
-
-//---General--------------------------
 
 #define CATCH_CONFIG_MAIN
 #define LEPTO_LOG_DEBUG
@@ -28,22 +25,22 @@
 #else
    #error "Either 'catch' or 'catch2' has to be installed"
 #endif
+
 #include <QCoreApplication>
 #include <QElapsedTimer>
 
-//--- Own ----------------------------
-
-#include "canserver.hpp"
-#include "connectorTcpClient.hpp"
+#include "canhub/canserver.hpp"
+#include "canhub/connectorTcpClient.hpp"
 #include "test_connector.hpp"
 
 #define TEST_ALL
 #define STOP_ON_FAIL
 
 
-//---Implementation------------------------------------------------------------
+/*--- Implementation --------------------------------------------------------*/
 
 
+// Needed to set up "QCoreApplication"
 int argc=1;
 char arg0[]{'A',0};
 char* argv[]{ arg0 };

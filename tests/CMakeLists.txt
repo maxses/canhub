@@ -1,12 +1,9 @@
 #------------------------------------------------------------------------------
 #
-# \brief	CMakeLists.txt file for "liblepto"
+# \brief CMakeLists.txt for tests for CANHub
 #
 #------------------------------------------------------------------------------
 
-
-cmake_minimum_required(VERSION 3.11)
-project( tests )
 
 if( EXISTS /usr/include/catch2 )
         add_definitions( "-DCATCH2" )

@@ -1,10 +1,31 @@
+/**---------------------------------------------------------------------------
+ *
+ * @file       connectorCan.hpp
+ * @brief      Class for a CAN-Adapter-connector
+ *
+ *             Se class documentation.
+ *
+ *  \date      20240821
+ *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \copyright SPDX-License-Identifier: Apache-2.0
+ *
+ *---------------------------------------------------------------------------*/
 
-#include <connectorTcpClient.hpp>
+
+/*--- Header ----------------------------------------------------------------*/
+
+
 #include <QCoreApplication>
-#include "config.hpp"
+#include <canhub/connectorTcpClient.hpp>
+#include <canhub/config.hpp>
+
+
+/*--- Implementation --------------------------------------------------------*/
+
 
 namespace CANHub
 {
+
 
 CConnectorTcpClient::CConnectorTcpClient( QObject *parent, const QString host, int port )
    :m_socket( this )
@@ -44,6 +65,7 @@ void CConnectorTcpClient::heartbeat()
    }
 }
 
+
 void CConnectorTcpClient::readyRead()
 {
    QByteArray data = m_socket.readAll();
@@ -53,6 +75,7 @@ void CConnectorTcpClient::readyRead()
    
    emit( dataIn( *pMsg, this ) );
 }
+
 
 void CConnectorTcpClient::dataOut( const SMessage& msg, CConnector* source )
 {
@@ -64,4 +87,8 @@ void CConnectorTcpClient::dataOut( const SMessage& msg, CConnector* source )
    }
 }
 
+
 } // namespace CANHub
+
+
+/*--- fin -------------------------------------------------------------------*/

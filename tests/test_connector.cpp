@@ -1,41 +1,35 @@
-//----------------------------------------------------------------------------
-///
-/// \file   test_connector.hpp
-///
-/// \brief  Test connector for CANHub
-///
-///         The test counter is needed for unit tests.
-///         The test connector can be configured to expect specific data from
-///         the CAN-server. When the connector receives data, it checks if the
-///         data matches the expected data. According to the result it increases
-///         an good- or bad-counter.
-///
-/// \date   20240813
-/// \author Maximilian Seesslen <mes@seesslen.net>
-///
-//----------------------------------------------------------------------------
+/**---------------------------------------------------------------------------
+ *
+ * @file       test_connector.cpp
+ * @brief      Test connector for CANHub
+ *
+ *             The test counter is needed for unit tests.
+ *             The test connector can be configured to expect specific data
+ *             from the CAN-server. When the connector receives data, it
+ *             checks if the data matches the expected data. According to the
+ *             result it increases an good- or bad-counter.
+ *
+ * @date       20240813
+ * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @copyright  SPDX-License-Identifier: Apache-2.0
+ *
+ *---------------------------------------------------------------------------*/
 
 
-//---Documentation------------------------------------------------------------
+
+/*--- Header ----------------------------------------------------------------*/
 
 
-//---Includes -----------------------------------------------------------------
-
-
-//---General--------------------------
-
-
-//--- Own ----------------------------
-
-#include "canserver.hpp"
-#include "connectorTcpClient.hpp"
+#include "canhub/canserver.hpp"
+#include "canhub/connectorTcpClient.hpp"
 #include "test_connector.hpp"
 
 
-//---Implementation------------------------------------------------------------
+/*--- Implementation --------------------------------------------------------*/
 
 
 namespace CANHub {
+
 
 CTestConnector::CTestConnector( QObject *parent )
    :CConnectorTcpClient( parent, "localhost", CANHub::CANSERVER_UNITTEST_PORT )
@@ -76,4 +70,4 @@ void CTestConnector::slotVerifyDataIn( const SMessage& msg, CConnector* source )
 } // namespace CANHub
 
 
-//---fin-----------------------------------------------------------------------
+/*---fin---------------------------------------------------------------------*/

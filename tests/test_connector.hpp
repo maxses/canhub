@@ -1,30 +1,25 @@
-//----------------------------------------------------------------------------
-///
-/// \file   test_connector.hpp
-///
-/// \brief  main file for canserver
-///
-/// \date   20240813
-/// \author Maximilian Seesslen <mes@seesslen.net>
-///
-//----------------------------------------------------------------------------
+/**---------------------------------------------------------------------------
+ *
+ * @file       test_connector.hpp
+ * @brief      Test connector for CANHub
+ *
+ *             See class documentation for further information
+ *
+ * @date       20240813
+ * @author     Maximilian Seesslen <mes@seesslen.net>
+ * @copyright  SPDX-License-Identifier: Apache-2.0
+ *
+ *---------------------------------------------------------------------------*/
 
 
-//---Documentation------------------------------------------------------------
+/*--- Header ----------------------------------------------------------------*/
 
 
-//---Includes -----------------------------------------------------------------
+#include "canhub/canserver.hpp"
+#include "canhub/connectorTcpClient.hpp"
 
 
-//---General--------------------------
-
-
-//--- Own ----------------------------
-
-#include "canserver.hpp"
-#include "connectorTcpClient.hpp"
-
-//---Implementation------------------------------------------------------------
+/*--- Implementation --------------------------------------------------------*/
 
 
 namespace CANHub {
@@ -66,4 +61,5 @@ class CTestConnector: public CConnectorTcpClient
 
 } // namespace CANHub
 
-//---fin-----------------------------------------------------------------------
+
+/*---fin---------------------------------------------------------------------*/

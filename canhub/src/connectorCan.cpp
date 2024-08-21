@@ -1,39 +1,37 @@
-//-----------------------------------------------------------------------------
-///
-/// \brief  Socket-Can connector for CANHub
-///
-///         USB CAN Adapter
-///
-/// \date   20240804
-/// \author Maximilian Seesslen <development@seesslen.net>
-///
-//-----------------------------------------------------------------------------
+/**---------------------------------------------------------------------------
+ *
+ * @file       connectorCan.cpp
+ * @brief      Class for a CAN-Adapter-connector
+ *
+ *             Se class documentation.
+ *
+ *  \date      20240821
+ *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \copyright SPDX-License-Identifier: Apache-2.0
+ *
+ *---------------------------------------------------------------------------*/
 
 
 //---Includes------------------------------------------------------------------
 
 
 #include <sys/ioctl.h>
-#include <net/if.h>           // ifreq_ifr
+#include <net/if.h>              // ifreq_ifr
 #include <linux/can/raw.h>       // CAN_RAW
 #include <sys/socket.h>          // PF_CAN
 #include <linux/can/netlink.h>   // can_bittiming
 #include <signal.h>              // signal()
-#include <unistd.h>           // close()
+#include <unistd.h>              // close()
 
-#include <connectorCan.hpp>
+#include <canhub/connectorCan.hpp>
 
 
 //---Implementation------------------------------------------------------------
 
 
-void sigpipe_handler(int value)
-{
-   qWarning("SIGPIPE caught; %d", value);
-}
-
 namespace CANHub
 {
+
 
 CConnectorCan::CConnectorCan( QObject *parent, const QString interface )
    :CConnector( parent )
@@ -47,8 +45,6 @@ CConnectorCan::CConnectorCan( QObject *parent, const QString interface )
    
    connect( &m_checkTimer, SIGNAL( timeout() ), this, SLOT( checkConnection() ) );
    m_checkTimer.start(1000);
-   
-   signal(SIGPIPE,sigpipe_handler);
 }
 
 
@@ -233,6 +229,8 @@ void CConnectorCan::dataOut( const SMessage& msg, CConnector* source )
    }
 }
 
+
 } // namespace CANHub
+
 
 //---fin----------------------------------------------------------------------

@@ -1,9 +1,29 @@
-// CConnectorTcpServer.cpp
+/**---------------------------------------------------------------------------
+ *
+ * @file       connectorTcpServer.hpp
+ * @brief      Class for connector from an client within the server.
+ *
+ *             See class documentation.
+ *
+ *  \date      20240821
+ *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \copyright SPDX-License-Identifier: Apache-2.0
+ *
+ *---------------------------------------------------------------------------*/
 
-#include "connectorTcpServer.hpp"
+
+/*--- Header ----------------------------------------------------------------*/
+
+
+#include <canhub/connectorTcpServer.hpp>
+
+
+/*--- Implementation --------------------------------------------------------*/
+
 
 namespace CANHub
 {
+
 
 CConnectorTcpServer::CConnectorTcpServer(int id, QObject *parent)
    :CConnector(parent)
@@ -14,11 +34,13 @@ CConnectorTcpServer::CConnectorTcpServer(int id, QObject *parent)
    connectSocket();
 }
 
+
 CConnectorTcpServer::~CConnectorTcpServer()
 {
    qDebug() << "Deleting connection";
    m_pSocket->deleteLater();
 }
+
 
 void CConnectorTcpServer::connectSocket()
 {
@@ -38,6 +60,7 @@ void CConnectorTcpServer::connectSocket()
     qDebug() << m_socketDescriptor << " Client connected";
 }
 
+
 void CConnectorTcpServer::readyRead()
 {
     QByteArray data = m_pSocket->readAll();
@@ -48,12 +71,14 @@ void CConnectorTcpServer::readyRead()
     emit( dataIn( *pMsg, this ) );
 }
 
+
 void CConnectorTcpServer::disconnected()
 {
    qDebug() << m_socketDescriptor << " Disconnected";
    
    emit( deactivate( this ) );
 }
+
 
 void CConnectorTcpServer::dataOut( const SMessage& msg, CConnector* source )
 {
@@ -65,5 +90,8 @@ void CConnectorTcpServer::dataOut( const SMessage& msg, CConnector* source )
    }
 }
 
+
 } // namespace CANHub
 
+
+/*--- fin -------------------------------------------------------------------*/

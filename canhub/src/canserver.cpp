@@ -1,9 +1,28 @@
-// CCanServer.cpp
+/**---------------------------------------------------------------------------
+ *
+ * @file       canserver.cpp
+ * @brief      Class for canserver command
+ *
+ *             See class documentation.
+ *
+ *  \date      20240821
+ *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \copyright SPDX-License-Identifier: Apache-2.0
+ *
+ *---------------------------------------------------------------------------*/
 
-#include "config.hpp"
-#include "canserver.hpp"
-#include <connectorTcpServer.hpp>
-#include <connectorCan.hpp>
+
+/*--- Header ----------------------------------------------------------------*/
+
+
+#include "canhub/config.hpp"
+#include "canhub/canserver.hpp"
+#include "canhub/connectorTcpServer.hpp"
+#include "canhub/connectorCan.hpp"
+
+
+/*--- Implementation --------------------------------------------------------*/
+
 
 CCanServer::CCanServer(QObject *parent, int port)
    :QTcpServer(parent)
@@ -21,9 +40,11 @@ CCanServer::CCanServer(QObject *parent, int port)
    m_heartbeatTimer.start(1000);
 }
 
+
 void CCanServer::newConnection()
 {
 }
+
 
 void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
 {
@@ -31,6 +52,7 @@ void CCanServer::incomingConnection(qintptr socketDescriptor) /* override */
    CANHub::CConnectorTcpServer* connector = new CANHub::CConnectorTcpServer(socketDescriptor, this);
    addConnector(connector);
 }
+
 
 void CCanServer::addConnector( CANHub::CConnector* connector )
 {
@@ -46,6 +68,7 @@ void CCanServer::addConnector( CANHub::CConnector* connector )
             this, SLOT( dataIn( const SMessage&, CANHub::CConnector* ) ) );
 }
 
+
 void CCanServer::heartbeat()
 {
    qDebug() << "Heartbeat; " << m_listConnections.size() << "connections";
@@ -57,6 +80,7 @@ void CCanServer::heartbeat()
 #endif
 }
 
+
 void CCanServer::removeConnection( CANHub::CConnector* connection )
 {
    qDebug() << "Removing connection";
@@ -67,11 +91,13 @@ void CCanServer::removeConnection( CANHub::CConnector* connection )
    return;
 }
 
+
 void CCanServer::dataIn( const SMessage& msg, CANHub::CConnector* source )
 {
    qDebug( "Server data in from '%s'", qPrintable(source->getName()) );
    emit( dataOut( msg, source ) );
 }
+
 
 bool CCanServer::addSocketCan(const QString interface )
 {
@@ -80,3 +106,6 @@ bool CCanServer::addSocketCan(const QString interface )
    addConnector( pCan );
    return( true );
 }
+
+
+/*--- fin -------------------------------------------------------------------*/
