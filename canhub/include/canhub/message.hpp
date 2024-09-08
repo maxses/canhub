@@ -19,14 +19,14 @@ struct SMessage
    unsigned int id;
    int length;
    int flags;
-   char data[64];
+   unsigned char data[64];
    
    SMessage()
    {
       eType=EType::Unknown;
       length=0;
    }
-   SMessage(int _id, int _length, char* _data)
+   SMessage(int _id, int _length, unsigned char* _data)
    {
       eType=EType::Message;
       setId(_id);
@@ -43,7 +43,7 @@ struct SMessage
       return( id );
    }
    
-   void setData(int _length, char* _data )
+   void setData(int _length, unsigned char* _data )
    {
       length = _length;
       if(length>sizeof(data))
@@ -59,7 +59,7 @@ struct SMessage
       return( length );
    }
    
-   const char* getData() const
+   const unsigned char* getData() const
    {
       return( data );
    }
