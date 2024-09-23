@@ -82,7 +82,7 @@ TEST_CASE( "Routing", "[default]" )
       CANHub::CTestConnector* connectors[2]{ &connectorA, &connectorB };
       
       SMessage msg;
-      char buf[64];
+      unsigned char buf[64];
       QElapsedTimer timer;
       
       for(int i1=0; i1<sizeof(testPatterns)/sizeof(testPatterns[0]); i1++)
