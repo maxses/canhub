@@ -20,7 +20,7 @@
 #include <QCommandLineOption>
 #include <QLoggingCategory>
 #include "canhub/canserver.hpp"
-#include "git_version_canhub.h"
+#include "git_version.h"
 
 
 /*--- Implementation --------------------------------------------------------*/
