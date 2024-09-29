@@ -13,6 +13,8 @@ add_executable(
       ${GIT_VERSION_HEADER}
 )
 
+add_dependencies( canserver GitVersion )
+
 target_link_libraries(
    canserver
       canhub
