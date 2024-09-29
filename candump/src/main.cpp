@@ -25,7 +25,7 @@
 #include "canhub/connectorCan.hpp"
 #include "canhub/config.hpp"
 #include "candump.hpp"
-#include "git_version_canhub.h"
+#include "git_version.h"
 
 
 /*--- Implementation --------------------------------------------------------*/

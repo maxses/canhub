@@ -5,15 +5,14 @@
 #------------------------------------------------------------------------------
 
 
-use_git_version_from( canhub )
-
+find_package( GitVersion REQUIRED )
 
 add_executable(
    candump
       include/candump.hpp
       src/candump.cpp
       src/main.cpp
-      ${GIT_VERSION_HEADER_${PROJECT_NAME}}
+      ${GIT_VERSION_HEADER}
 )
 
 target_link_libraries(
