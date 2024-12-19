@@ -15,8 +15,6 @@ add_executable(
       ${GIT_VERSION_HEADER}
 )
 
-add_dependencies( candump GitVersion )
-
 target_link_libraries(
    candump
       canhub
