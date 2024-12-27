@@ -1,5 +1,5 @@
-#ifndef CANDUMP_HPP
-#define CANDUMP_HPP
+#ifndef CANHUB_CANDUMP_HPP
+#define CANHUB_CANDUMP_HPP
 /**---------------------------------------------------------------------------
  *
  * @file       candump.hpp
@@ -23,6 +23,10 @@
 
 
 /*--- Implementation --------------------------------------------------------*/
+
+
+namespace CANHub
+{
 
 
 class CCanDump: QObject
@@ -50,5 +54,8 @@ class CCanDump: QObject
 };
 
 
+} // namespace CANHub
+
+
 /*--- fin -------------------------------------------------------------------*/
-#endif // CANDUMP_HPP
+#endif // CANHUB_CANDUMP_HPP

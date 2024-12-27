@@ -23,6 +23,10 @@
 /*--- Implementation --------------------------------------------------------*/
 
 
+namespace CANHub
+{
+
+
 /**
  * @brief Le constructuer
  * @param parent
@@ -61,6 +65,9 @@ void CCanDump::slotDataIn( const SMessage& msg, CANHub::CConnector* source )
    }
    printf("\n");
 }
+
+
+} // namespace CANHub
 
 
 /*--- fin -------------------------------------------------------------------*/

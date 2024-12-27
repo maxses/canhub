@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
       }
    }
    
-   CCanDump* dump=new CCanDump( &app, connector );
+   CANHub::CCanDump* dump=new CANHub::CCanDump( &app, connector );
    
    return app.exec();
 }
