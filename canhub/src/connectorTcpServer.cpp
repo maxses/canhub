@@ -80,7 +80,7 @@ void CConnectorTcpServer::disconnected()
 }
 
 
-void CConnectorTcpServer::dataOut( const SMessage& msg, CConnector* source )
+void CConnectorTcpServer::dataOut( const CANHub::SMessage& msg, CConnector* source )
 {
    if( source != this )
    {
