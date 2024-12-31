@@ -1,43 +1,81 @@
+#-----------------------------------------------------------------------------
+#
+# \brief		CMake module to create an git version information header file
+#
+#				Example of usage:
+#
+#					[...]
+#
+#					find_package(GitVersion REQUIRED)
+#
+#					add_executable( ${PROJECT_NAME}
+#								src/main.cpp
+#								${GIT_VERSION_HEADER}
+#					)
+#
+#					[...]
+#           If the cmake-cariable "BUILD_ID" is set, it is set as C/C++ 
+#           definition/macro. 
+#           This can be used by build/servers/release-scripts.
+#           Applications can send the build-id it via UART/CAN.
+#           It is needed to find the matching elf file for debugging an
+#           flashed firmware. Just the same firmware-version is not sufficient.
+#
+# \author	Maximilian Seesslen <mes@seesslen.net>
+#
+#-----------------------------------------------------------------------------
 
 
-if(NOT GIT_VERSION_HEADER)
+set ( GIT_VERSION_HEADER  "${CMAKE_CURRENT_BINARY_DIR}/git_version/git_version.h" )
+set ( GIT_VERSION_DIRECTORY  "${CMAKE_CURRENT_BINARY_DIR}/git_version" )
 
-   set( GIT_VERSION_HEADER_REAL ${CMAKE_BINARY_DIR}/git_version/git_version.h )
-   set( GIT_VERSION_HEADER_FAKE ${GIT_VERSION_HEADER_REAL}_doesnotexist )
-   set( GIT_VERSION_HEADER ${GIT_VERSION_HEADER_REAL} )
+get_filename_component(
+   GV_PROJECT_NAME_UNIQUE
+   ${CMAKE_CURRENT_BINARY_DIR}
+   NAME
+)
 
-   # Having ${GIT_VERSION_HEADER_REAL} in outputs causes file to be touched
-   # and so everything is rebuild
-   add_custom_command(
-      OUTPUT ${GIT_VERSION_HEADER_FAKE}
-      BYPRODUCTS ${GIT_VERSION_HEADER_REAL}
-      COMMENT "Generation GIT version file"
-      COMMAND
-            SOURCE_DIR=${CMAKE_SOURCE_DIR}
-            OUTPUT_DIR=${CMAKE_BINARY_DIR}
-            PROJECT=${PROJECT_NAME}
-               cmake -P ${CMAKE_CURRENT_LIST_DIR}/git_version_script.cmake
+set ( GV_PROJECT_NAME_UNIQUE ${PROJECT_NAME}_${GV_PROJECT_NAME_UNIQUE} )
 
-   )
+set ( GV_PROJECT_NAME ${PROJECT_NAME} )
 
-   add_custom_target( GitVersion
-      DEPENDS ${GIT_VERSION_HEADER_FAKE}
-      SOURCES ${GIT_VERSION_HEADER_REAL}
-   )
+file( MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/git_version" )
 
-   include_directories( ${CMAKE_BINARY_DIR}/git_version )
+add_custom_target( git_creater_${GV_PROJECT_NAME_UNIQUE}
+    COMMAND
+      SOURCE_DIR=${CMAKE_SOURCE_DIR} 
+      OUTPUT_DIR=${CMAKE_CURRENT_BINARY_DIR}/git_version 
+      PROJECT=${GV_PROJECT_NAME} 
+         cmake -P ${CMAKE_CURRENT_LIST_DIR}/git_version_script.cmake
+)
 
-else(NOT GIT_VERSION_HEADER)
+add_custom_command(
+    OUTPUT
+         ${GIT_VERSION_HEADER}
+    DEPENDS
+         DEPENDS git_creater_${GV_PROJECT_NAME_UNIQUE}
+)
 
-   set_source_files_properties( ${GIT_VERSION_HEADER_FAKE}
-      PROPERTIES
-         GENERATED True )
+set_source_files_properties(
+   ${GIT_VERSION_HEADER}
+   PROPERTIES GENERATED TRUE
+)
 
-   set_source_files_properties( ${GIT_VERSION_HEADER_REAL}
-      PROPERTIES
-         GENERATED True )
+install(
+   FILES
+      ${CMAKE_CURRENT_BINARY_DIR}/git_version/versions_${GV_PROJECT_NAME}.txt
+   DESTINATION
+      share/doc
+   OPTIONAL
+)
 
-endif(NOT GIT_VERSION_HEADER)
+
+# BUILD_ID might be set by build scripts
+if ( BUILD_ID )
+   add_definitions( -DBUILD_ID=${BUILD_ID} )
+endif ( BUILD_ID )
+
+include_directories ( "${CMAKE_CURRENT_BINARY_DIR}/git_version" )
 
 
-#---fin------------------------------------------------------------------------
+#---fin.----------------------------------------------------------------------
