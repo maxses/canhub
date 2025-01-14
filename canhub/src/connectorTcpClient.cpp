@@ -41,6 +41,10 @@ CConnectorTcpClient::CConnectorTcpClient( QObject *parent, const QString host, i
    m_heartbeatTimer.start(2000);
    
    m_socket.connectToHost( host, port );
+   if( !m_socket.waitForConnected() )
+   {
+      qFatal("Could not connect to '%s'", qPrintable(host));
+   }
 #if 0
    if( ! m_socket.waitForConnected( 3000 ) )
    {
