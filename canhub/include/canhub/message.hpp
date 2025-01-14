@@ -30,6 +30,8 @@ struct SMessage
    {
       eType=EType::Unknown;
       length=0;
+      flags=0;
+      id=0;
    }
    SMessage(int _id, int _length, const unsigned char* _data)
    {

@@ -19,9 +19,9 @@ find_package( GitVersion REQUIRED )
 set( CMAKE_CXX_STANDARD 20 )
 
 add_subdirectory( canhub )
-# add_subdirectory( canserver )
+add_subdirectory( canserver )
 add_subdirectory( candump )
-# add_subdirectory( tests )
+add_subdirectory( tests )
 
 
 #---fin------------------------------------------------------------------------

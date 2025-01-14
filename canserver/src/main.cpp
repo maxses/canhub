@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
     QCommandLineParser parser;
-    CCanServer mServer;
+    CANHub::CCanServer mServer;
     app.setApplicationVersion( GIT_SEMI );
     
     parser.setApplicationDescription("Test helper");
