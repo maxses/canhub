@@ -63,12 +63,15 @@ void CConnectorTcpServer::connectSocket()
 
 void CConnectorTcpServer::readyRead()
 {
-    QByteArray data = m_pSocket->readAll();
-
-    qDebug() << m_socketDescriptor << " Data in: " << data;
-    SMessage* pMsg( (SMessage*)data.data() );
-
-    emit( dataIn( *pMsg, this ) );
+   while( m_pSocket->bytesAvailable() )
+   {
+      QByteArray data = m_pSocket->read( sizeof( SMessage ) );
+      
+      qDebug() << m_socketDescriptor << " Data in: " << data;
+      SMessage* pMsg( (SMessage*)data.data() );
+      
+      emit( dataIn( *pMsg, this ) );
+   }
 }
 
 
