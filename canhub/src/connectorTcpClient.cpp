@@ -72,12 +72,15 @@ void CConnectorTcpClient::heartbeat()
 
 void CConnectorTcpClient::readyRead()
 {
-   QByteArray data = m_socket.readAll();
+   while( m_pSocket->bytesAvailable() )
+   {
+      QByteArray data = m_pSocket->read( sizeof( SMessage ) );
    
-   qDebug() << " Client data in: " << data.size() << "Bytes";
-   SMessage* pMsg( (SMessage*)data.data() );
+      qDebug() << " Client data in: " << data.size() << "Bytes";
+      SMessage* pMsg( (SMessage*)data.data() );
    
-   emit( dataIn( *pMsg, this ) );
+      emit( dataIn( *pMsg, this ) );
+   }
 }
 
 
