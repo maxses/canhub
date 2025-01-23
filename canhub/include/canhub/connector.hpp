@@ -54,7 +54,7 @@ public:
 
 signals:
    void deactivate( CANHub::CConnector* );
-   void dataIn( const SMessage& msg, CANHub::CConnector* source );
+   void dataIn( const CANHub::SMessage& msg, CANHub::CConnector* source );
    void connectionChanged( bool connected );
 
 public slots:
