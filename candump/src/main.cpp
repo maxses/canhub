@@ -64,7 +64,8 @@ int main(int argc, char *argv[])
    if( parser.isSet( oInterface ) )
    {
       qInfo("CANDump, direct connection" );
-      connector = new CANHub::CConnectorCan( &app, parser.value( oInterface ) );
+      connector = new CANHub::CConnectorCan( &app, parser.value( oInterface )
+                                            , parser.value( oInterface ) );
    }
    else
    {

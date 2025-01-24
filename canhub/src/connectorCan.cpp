@@ -40,7 +40,6 @@ CConnectorCan::CConnectorCan( QObject *parent, const QString name, const QString
    ,skt( 0 )
 {
    m_interface=interface;
-   m_name=interface;
    connectCan();
    
    connect( &m_checkTimer, SIGNAL( timeout() ), this, SLOT( checkConnection() ) );

@@ -15,6 +15,7 @@
 /*--- Header ----------------------------------------------------------------*/
 
 
+#include <QHostInfo>
 #include "canhub/config.hpp"
 #include "canhub/canserver.hpp"
 #include "canhub/connectorTcpServer.hpp"
@@ -107,7 +108,8 @@ void CCanServer::dataIn( const CANHub::SMessage& msg, CANHub::CConnector* source
 bool CCanServer::addSocketCan(const QString interface )
 {
    CANHub::CConnectorCan *pCan;
-   pCan=new CANHub::CConnectorCan( this, "cordyceps", interface );
+   pCan=new CANHub::CConnectorCan( this
+            , QHostInfo::localHostName() + ":" + interface, interface );
    addConnector( pCan );
    return( true );
 }
