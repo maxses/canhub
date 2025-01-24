@@ -43,7 +43,7 @@ private:
    int m_port;
 
 public:
-   explicit CConnectorTcpClient( QObject *parent = 0, const QString = "localhost", int port = CANHub::CANSERVER_DEFAULT_PORT );
+   explicit CConnectorTcpClient( QObject *parent = 0, const QString name="noname", const QString = "localhost", int port = CANHub::CANSERVER_DEFAULT_PORT );
 
 public slots:
    void heartbeat();

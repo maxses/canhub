@@ -34,7 +34,7 @@ namespace CANHub
 
 
 CConnectorCan::CConnectorCan( QObject *parent, const QString interface )
-   :CConnector( parent )
+   :CConnector( parent, interface )
    ,m_socketNotifier( nullptr )
    ,m_connected( false )
    ,skt( 0 )
@@ -149,6 +149,7 @@ void CConnectorCan::readyReadSlot( int socket )
             );
    }
    
+   msg.setSenderName( getName() );
    emit( dataIn(msg, this) );
 }
 

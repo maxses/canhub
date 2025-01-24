@@ -32,7 +32,7 @@ namespace CANHub {
 
 
 CTestConnector::CTestConnector( QObject *parent )
-   :CConnectorTcpClient( parent, "localhost", CANHub::CANSERVER_UNITTEST_PORT )
+   :CConnectorTcpClient( parent, "testConnector", "localhost", CANHub::CANSERVER_UNITTEST_PORT )
 {
    bool success = connect(
          this, SIGNAL( dataIn( const SMessage&, CANHub::CConnector* ) ),

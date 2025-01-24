@@ -19,6 +19,7 @@ struct SMessage
    unsigned int id;
    int length;
    int flags;
+   char senderName[16];
    char data[64];
    
    SMessage()
@@ -52,6 +53,10 @@ struct SMessage
          length=sizeof(data);
       }
       memcpy( data, _data, qMin(length, (int)sizeof(data)) );
+   }
+   void setSenderName( const QString _senderName )
+   {
+      snprintf(senderName, sizeof(senderName), qPrintable(_senderName) );
    }
    
    int getLen() const

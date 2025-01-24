@@ -46,11 +46,10 @@ protected:
    QString m_interface;
    
 public:
-   explicit CConnector( QObject *parent = 0 );
+   explicit CConnector( QObject *parent = 0, const QString name = "noname" );
    ~CConnector();
    const QString& getName() const { return(m_name); };
    const QString& getInterface() const { return( m_interface ); };
-   
 
 signals:
    void deactivate( CANHub::CConnector* );

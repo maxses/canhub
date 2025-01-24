@@ -25,8 +25,9 @@ namespace CANHub
 {
 
 
-CConnector::CConnector( QObject *parent )
+CConnector::CConnector( QObject *parent, const QString name )
    :QObject(parent)
+    ,m_name(name)
 {
 }
 
