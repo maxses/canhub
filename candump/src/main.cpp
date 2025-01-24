@@ -25,7 +25,7 @@
 #include "canhub/connectorCan.hpp"
 #include "canhub/config.hpp"
 #include "candump.hpp"
-#include "git_version_canhub.h"
+#include "git_version.h"
 
 
 /*--- Implementation --------------------------------------------------------*/
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
       }
    }
    
-   CCanDump* dump=new CCanDump( &app, connector );
+   CANHub::CCanDump* dump=new CANHub::CCanDump( &app, connector );
    
    return app.exec();
 }

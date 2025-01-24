@@ -63,12 +63,15 @@ void CConnectorTcpServer::connectSocket()
 
 void CConnectorTcpServer::readyRead()
 {
-    QByteArray data = m_pSocket->readAll();
-
-    qDebug() << m_socketDescriptor << " Data in: " << data;
-    SMessage* pMsg( (SMessage*)data.data() );
-
-    emit( dataIn( *pMsg, this ) );
+   while( m_pSocket->bytesAvailable() )
+   {
+      QByteArray data = m_pSocket->read( sizeof( SMessage ) );
+      
+      qDebug() << m_socketDescriptor << " Data in: " << data;
+      SMessage* pMsg( (SMessage*)data.data() );
+      
+      emit( dataIn( *pMsg, this ) );
+   }
 }
 
 
@@ -80,7 +83,7 @@ void CConnectorTcpServer::disconnected()
 }
 
 
-void CConnectorTcpServer::dataOut( const SMessage& msg, CConnector* source )
+void CConnectorTcpServer::dataOut( const CANHub::SMessage& msg, CConnector* source )
 {
    if( source != this )
    {

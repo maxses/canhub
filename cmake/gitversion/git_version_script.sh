@@ -37,6 +37,67 @@ helpExit()
    exit
 }
 
+subDirectory()
+{
+   submodule=$1
+   project=$2
+   
+   pushd $submodule &> /dev/null
+   
+      DIRTY="$(git diff --quiet --exit-code || echo +)"
+      TAG="$(git describe --tags  --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*')"
+      SHA="$(git log --pretty=format:'%h' -n 1)"
+      DISTANCE="$(git rev-list HEAD ^${TAG} --count)"
+      
+      if [ "$format" == "text" ]; then
+         echo "$submodule: \"$(git describe --tags --dirty --long --match 'v[0-9]*.[0-9]*.[0-9]*')$CHANGE\""
+      else
+         calculateVersionCode
+         echo "#define GIT_LONG_$project \"$(git describe --tags --dirty --long --match 'v[0-9]*.[0-9]*.[0-9]*')$CHANGE\""
+         echo "#define GIT_SHA_$project \"$(git log --pretty=format:'%h' -n 1)\""
+         echo "#define GIT_SHORT_$project \"${TAG}-${DISTANCE}${DIRTY}\""
+         echo "#define GIT_REV_$project \"$(git describe --tags --dirty --match 'v[0-9]*.[0-9]*.[0-9]*')\""
+         echo "#define GIT_BRANCH_$project \"$(git symbolic-ref --short HEAD)\""
+         echo "#define VERSION_CODE_$project ${VERSION_CODE}"
+         echo
+      fi
+      
+   popd &> /dev/null
+}
+
+calculateVersionCode()
+{
+   V="${TAG#v*}"
+   MAJOR="${V%%.*}"
+   V="${V#*.}"
+   MINOR="${V%%.*}"
+   V="${V#*.}"
+   PATCH="${V%%-*}"
+   V="${V#*-}"
+   
+   ADDDIRTY=0
+   git diff --quiet --exit-code || ADDDIRTY=1
+   if [ ! -z "$DISTANCE" ]; then
+      DISTCODE=$(($DISTANCE<<2))
+      #if [ -z "$DISTCODE" ]; then
+      #   DISTCODE="0xF0"
+      #fi
+      let MAX_DISTCODE=0xF0
+      if [ "${DISTCODE}" -gt "${MAX_DISTCODE}" ]; then
+         echo "Error: Distance to version too high. Consider taging a new version"
+         exit 22
+      fi
+   else
+      MAJOR=0
+      MINOR=0
+      PATCH=0
+      DISTCODE=0xFC
+   fi
+   
+   let DISTCODE+=ADDDIRTY
+   VERSION_CODE=$(printf "0x%02X%02X%02X%02X" $MAJOR $MINOR $PATCH $DISTCODE)
+}
+
 
 format=""
 
@@ -63,7 +124,7 @@ done
 
 
 DIRTY="$(git diff --quiet --exit-code || echo +)"
-TAG="$(git describe --tags  --abbrev=0)"
+TAG="$(git describe --tags  --abbrev=0 --match 'v[0-9]*.[0-9]*.[0-9]*')"
 SHA="$(git log --pretty=format:'%h' -n 1)"
 SHORT_SHA="${SHA:0:4}"
 DISTANCE="$(git rev-list HEAD ^${TAG} --count)"
@@ -80,41 +141,17 @@ else
    echo "#define GIT_SHA_INT  0x$(git log --pretty=format:'%h' -n 1)"
    echo "#define GIT_SHORT  \"${TAG}-${DISTANCE}${DIRTY}\""
    echo "#define GIT_SEMI   \"${TAG}-${DISTANCE}-g${SHORT_SHA}${DIRTY}\""
+   echo "#define GIT_SEMI_TAIL   \"${DISTANCE}-g${SHORT_SHA}${DIRTY}\""
    echo "#define GIT_REV  \"$(git describe --tags --dirty --match 'v[0-9]*.[0-9]*.[0-9]*')\""
    echo "#define GIT_BRANCH  \"$(git symbolic-ref --short HEAD)\""
    echo "#define GIT_PROJECT  \"${PROJECT}\""
-fi
-
-V="${TAG#v*}"
-MAJOR="${V%%.*}"
-V="${V#*.}"
-MINOR="${V%%.*}"
-V="${V#*.}"
-PATCH="${V%%-*}"
-V="${V#*-}"
-
-ADDDIRTY=0
-git diff --quiet --exit-code || ADDDIRTY=1
-if [ ! -z "$DISTANCE" ]; then
-   DISTCODE=$(($DISTANCE<<1))
-   #if [ -z "$DISTCODE" ]; then
-   #   DISTCODE="0xF0"
-   #fi
-   let MAX_DISTCODE=0xF0
-   if [ "${DISTCODE}" -gt "${MAX_DISTCODE}" ]; then
-      echo "Error: Distance to version too high. Consider taging a new version"
-      exit 22
+   if [ ! -z "${DIRTY}" ]; then
+      echo "#define GIT_DIRTY 1"
    fi
-else
-   MAJOR=0
-   MINOR=0
-   PATCH=0
-   DISTCODE=0xFE
+   echo "#define GIT_PROJECT  \"${PROJECT}\""
 fi
 
-let DISTCODE+=ADDDIRTY
-VERSION_CODE=$(printf "0x%02X%02X%02X%02X" $MAJOR $MINOR $PATCH $DISTCODE)
-
+calculateVersionCode
 
 if [ "$format" == "text" ]; then
    echo -n
@@ -132,6 +169,7 @@ else
    echo
 fi
 
+subDirectory . ${PROJECT}
 
 BASE_PROJECT=$PWD
 submodules=$(git submodule foreach --quiet 'basename $PWD')
@@ -143,23 +181,7 @@ do
       echo "Base project diry: $BASE_PROJECT" >&2
       exit 22
    fi
-   cd $submodule
-		DIRTY="$(git diff --quiet --exit-code || echo +)"
-		TAG="$(git describe --tags  --abbrev=0)"
-		SHA="$(git log --pretty=format:'%h' -n 1)"
-		DISTANCE="$(git rev-list HEAD ^${TAG} --count)"
-      
-      if [ "$format" == "text" ]; then
-         echo "$submodule: \"$(git describe --tags --dirty --long --match 'v[0-9]*.[0-9]*.[0-9]*')$CHANGE\""
-      else
-         echo "#define GIT_LONG_$submodule \"$(git describe --tags --dirty --long --match 'v[0-9]*.[0-9]*.[0-9]*')$CHANGE\""
-         echo "#define GIT_SHA_$submodule \"$(git log --pretty=format:'%h' -n 1)\""
-         echo "#define GIT_SHORT_$submodule \"${TAG}-${DISTANCE}${DIRTY}\""
-         echo "#define GIT_REV_$submodule  \"$(git describe --tags --dirty --match 'v[0-9]*.[0-9]*.[0-9]*')\""
-         echo "#define GIT_BRANCH_$submodule  \"$(git symbolic-ref --short HEAD)\""
-         echo
-      fi
-   cd ..
+   subDirectory $submodule $submodule
 done
 
 

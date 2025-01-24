@@ -29,6 +29,10 @@
 /*--- Implementation --------------------------------------------------------*/
 
 
+namespace CANHub
+{
+
+
 class CConnectorTcpServer;
 
 /**
@@ -66,6 +70,9 @@ protected:
 public:
    bool addSocketCan(const QString interface = "can0" );
 };
+
+
+} // namespace CANHub
 
 
 /*--- fin -------------------------------------------------------------------*/

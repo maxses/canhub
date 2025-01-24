@@ -24,6 +24,10 @@
 /*--- Implementation --------------------------------------------------------*/
 
 
+namespace CANHub
+{
+
+
 CCanServer::CCanServer(QObject *parent, int port)
    :QTcpServer(parent)
 {
@@ -106,6 +110,9 @@ bool CCanServer::addSocketCan(const QString interface )
    addConnector( pCan );
    return( true );
 }
+
+
+} // namespace CANHub
 
 
 /*--- fin -------------------------------------------------------------------*/

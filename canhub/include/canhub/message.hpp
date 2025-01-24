@@ -3,6 +3,11 @@
 
 #include <QtGlobal>
 
+
+namespace CANHub
+{
+
+
 enum class EType
 {
    Unknown=1,
@@ -20,14 +25,16 @@ struct SMessage
    int length;
    int flags;
    char senderName[16];
-   char data[64];
+   unsigned char data[64];
    
    SMessage()
    {
       eType=EType::Unknown;
       length=0;
+      flags=0;
+      id=0;
    }
-   SMessage(int _id, int _length, char* _data)
+   SMessage(int _id, int _length, const unsigned char* _data)
    {
       eType=EType::Message;
       setId(_id);
@@ -44,7 +51,7 @@ struct SMessage
       return( id );
    }
    
-   void setData(int _length, char* _data )
+   void setData(int _length, const unsigned char* _data )
    {
       length = _length;
       if(length>sizeof(data))
@@ -64,12 +71,14 @@ struct SMessage
       return( length );
    }
    
-   const char* getData() const
+   const unsigned char* getData() const
    {
       return( data );
    }
 };
 
+
+} // namespace CANHub
 
 //static_asser( sizeof(SMessage) == 64+16, "Size missmatch");
 

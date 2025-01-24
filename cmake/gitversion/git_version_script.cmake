@@ -23,15 +23,15 @@ execute_process(
                      WORKING_DIRECTORY $ENV{SOURCE_DIR}
                      OUTPUT_VARIABLE GIT_ALL_TEXT
                 )
-              
-if(EXISTS $ENV{OUTPUT_DIR}/git_version_$ENV{PROJECT}.h)
-	 file(READ $ENV{OUTPUT_DIR}/git_version_$ENV{PROJECT}.h VERSION_)
+
+if(EXISTS $ENV{OUTPUT_DIR}/git_version.h)
+	 file(READ $ENV{OUTPUT_DIR}/git_version.h VERSION_)
 else()
     set(VERSION_ "")
 endif()
 
 if (NOT "${GIT_ALL}" STREQUAL "${VERSION_}")
-    file(WRITE $ENV{OUTPUT_DIR}/git_version_$ENV{PROJECT}.h "${GIT_ALL}")
+    file(WRITE $ENV{OUTPUT_DIR}/git_version.h "${GIT_ALL}")
 endif()
 
 file(WRITE $ENV{OUTPUT_DIR}/versions_$ENV{PROJECT}.txt "${GIT_ALL_TEXT}")

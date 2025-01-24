@@ -5,14 +5,15 @@
 #------------------------------------------------------------------------------
 
 
-use_git_version_from( canhub )
-
+find_package( GitVersion REQUIRED )
 
 add_executable( 
    canserver 
       src/main.cpp
-      ${GIT_VERSION_HEADER_${PROJECT_NAME}}
+      ${GIT_VERSION_HEADER}
 )
+
+# add_dependencies( canserver GitVersion )
 
 target_link_libraries(
    canserver

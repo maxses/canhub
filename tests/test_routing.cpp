@@ -75,14 +75,14 @@ TEST_CASE( "Routing", "[default]" )
    
    SECTION( "Routing" )
    {
-      CCanServer canServer( &app, CANHub::CANSERVER_DEFAULT_PORT + 1 );
+      CANHub::CCanServer canServer( &app, CANHub::CANSERVER_DEFAULT_PORT + 1 );
       CANHub::CTestConnector connectorA( &canServer );
       CANHub::CTestConnector connectorB( &canServer );
 
       CANHub::CTestConnector* connectors[2]{ &connectorA, &connectorB };
       
-      SMessage msg;
-      char buf[64];
+      CANHub::SMessage msg;
+      unsigned char buf[64];
       QElapsedTimer timer;
       
       for(int i1=0; i1<sizeof(testPatterns)/sizeof(testPatterns[0]); i1++)

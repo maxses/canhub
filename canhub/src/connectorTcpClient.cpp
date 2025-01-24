@@ -41,6 +41,10 @@ CConnectorTcpClient::CConnectorTcpClient( QObject *parent, QString name, const Q
    m_heartbeatTimer.start(2000);
    
    m_socket.connectToHost( host, port );
+   if( !m_socket.waitForConnected() )
+   {
+      qFatal("Could not connect to '%s'", qPrintable(host));
+   }
 #if 0
    if( ! m_socket.waitForConnected( 3000 ) )
    {
@@ -68,12 +72,15 @@ void CConnectorTcpClient::heartbeat()
 
 void CConnectorTcpClient::readyRead()
 {
-   QByteArray data = m_socket.readAll();
+   while( m_socket.bytesAvailable() )
+   {
+      QByteArray data = m_socket.read( sizeof( SMessage ) );
    
-   qDebug() << " Client data in: " << data.size() << "Bytes";
-   SMessage* pMsg( (SMessage*)data.data() );
+      qDebug() << " Client data in: " << data.size() << "Bytes";
+      SMessage* pMsg( (SMessage*)data.data() );
    
-   emit( dataIn( *pMsg, this ) );
+      emit( dataIn( *pMsg, this ) );
+   }
 }
 
 

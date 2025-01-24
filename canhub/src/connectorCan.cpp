@@ -125,7 +125,7 @@ void CConnectorCan::readyReadSlot( int socket )
    
    msg.eType = EType::Message;
    msg.setId(frame.can_id & CAN_EFF_MASK);
-   msg.setData(frame.can_dlc, (char*)frame.data);
+   msg.setData(frame.can_dlc, (unsigned char*)frame.data);
 
    #if defined ( llll )
    msg.setOriginExtended( frame.can_id & CAN_EFF_FLAG ? true : false );
