@@ -45,7 +45,7 @@ class CConnectorCan
       bool m_connected;
       
    public:
-      CConnectorCan( QObject *parent, const QString interface );
+      CConnectorCan( QObject *parent, const QString name, const QString interface );
       void connectCan();
       bool getConnectionStatus()
       {

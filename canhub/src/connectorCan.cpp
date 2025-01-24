@@ -33,8 +33,8 @@ namespace CANHub
 {
 
 
-CConnectorCan::CConnectorCan( QObject *parent, const QString interface )
-   :CConnector( parent, interface )
+CConnectorCan::CConnectorCan( QObject *parent, const QString name, const QString interface )
+   :CConnector( parent, name )
    ,m_socketNotifier( nullptr )
    ,m_connected( false )
    ,skt( 0 )

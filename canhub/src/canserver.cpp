@@ -107,7 +107,7 @@ void CCanServer::dataIn( const CANHub::SMessage& msg, CANHub::CConnector* source
 bool CCanServer::addSocketCan(const QString interface )
 {
    CANHub::CConnectorCan *pCan;
-   pCan=new CANHub::CConnectorCan( this, interface );
+   pCan=new CANHub::CConnectorCan( this, "cordyceps", interface );
    addConnector( pCan );
    return( true );
 }
