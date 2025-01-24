@@ -8,7 +8,7 @@
 find_package( GitVersion REQUIRED )
 
 add_executable(
-   candump
+   canhubdump
       include/candump.hpp
       src/candump.cpp
       src/main.cpp
@@ -16,18 +16,18 @@ add_executable(
 )
 
 target_link_libraries(
-   candump
+   canhubdump
       canhub
 )
 
 target_include_directories(
-   candump
+   canhubdump
       PRIVATE
          "include/"
 )
 
 install (
-    TARGETS candump
+    TARGETS canhubdump
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib

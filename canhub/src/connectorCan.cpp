@@ -40,7 +40,7 @@ CConnectorCan::CConnectorCan( QObject *parent, const QString interface )
    ,skt( 0 )
 {
    m_interface=interface;
-   m_name="Socket-CAN Adapter";
+   m_name=interface;
    connectCan();
    
    connect( &m_checkTimer, SIGNAL( timeout() ), this, SLOT( checkConnection() ) );

@@ -43,7 +43,7 @@ class CCanDump: QObject
       explicit CCanDump( QObject *parent = 0, CANHub::CConnector* connector = 0 );
       
    public slots:
-      void slotDataIn( const SMessage& msg, CANHub::CConnector* source );
+      void slotDataIn( const CANHub::SMessage& msg, CANHub::CConnector* source );
 
    private:
       CANHub::CConnector* m_connector;

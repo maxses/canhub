@@ -67,9 +67,10 @@ void CCanServer::addConnector( CANHub::CConnector* connector )
 
     connect(this, SIGNAL( dataOut( const SMessage&, CANHub::CConnector* ) ),
             connector, SLOT( dataOut( const SMessage&, CANHub::CConnector* ) ) );
-
-    connect(connector, SIGNAL( dataIn( const SMessage&, CANHub::CConnector* ) ),
-            this, SLOT( dataIn( const SMessage&, CANHub::CConnector* ) ) );
+    
+    // CANHub::CConnectorCan::dataIn( const SMessage&, CANHub::CConnector* )
+    connect(connector, SIGNAL( dataIn( const CANHub::SMessage&, CANHub::CConnector* ) ),
+            this, SLOT( dataIn( const CANHub::SMessage&, CANHub::CConnector* ) ) );
 }
 
 
@@ -96,7 +97,7 @@ void CCanServer::removeConnection( CANHub::CConnector* connection )
 }
 
 
-void CCanServer::dataIn( const SMessage& msg, CANHub::CConnector* source )
+void CCanServer::dataIn( const CANHub::SMessage& msg, CANHub::CConnector* source )
 {
    qDebug( "Server data in from '%s'", qPrintable(source->getName()) );
    emit( dataOut( msg, source ) );

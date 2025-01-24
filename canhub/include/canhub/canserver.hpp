@@ -57,7 +57,7 @@ public slots:
    void newConnection();
    void heartbeat();
    void removeConnection( CANHub::CConnector* );
-   void dataIn( const SMessage& msg, CANHub::CConnector* source );
+   void dataIn( const CANHub::SMessage& msg, CANHub::CConnector* source );
 
 private:
    QTimer m_heartbeatTimer;

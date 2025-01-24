@@ -17,6 +17,7 @@ enum class EType
    ServerHeartbeat,     // 4
 };
 
+static constexpr uint32_t MAGIC = 0x11223344;
 
 struct SMessage
 {
@@ -26,6 +27,7 @@ struct SMessage
    int flags;
    char senderName[16];
    unsigned char data[64];
+   uint32_t magic;
    
    SMessage()
    {
@@ -33,7 +35,9 @@ struct SMessage
       length=0;
       flags=0;
       id=0;
+      magic=MAGIC;
    }
+   
    SMessage(int _id, int _length, const unsigned char* _data)
    {
       eType=EType::Message;
@@ -74,6 +78,10 @@ struct SMessage
    const unsigned char* getData() const
    {
       return( data );
+   }
+   const char* getSenderName() const
+   {
+      return( senderName );
    }
 };
 
