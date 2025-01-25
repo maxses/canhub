@@ -58,9 +58,13 @@ void CCanDump::slotDataIn( const CANHub::SMessage& msg, CANHub::CConnector* sour
    //   can0  464   [8]  0B 04 30 00 D4 1B 00 00
    
    QString senderName=msg.getSenderName();
-   senderName.resize( 16, ' ');
-   // Could also be printed: source->getInterface() )
-   printf("   %s  Id:0x%X   [%d] ",
+   // Resizing the string makes it nicer for setups with multiple connectors.
+   // But it does not match the output of the candump tool any more.
+   // senderName.resize( 16, ' ');
+   
+   // The confusing hex output without "0x" is adopted from the candump tool
+   // output from can-utils.
+   printf("  %s  %X   [%d] ",
           qPrintable( senderName ), msg.getId(), msg.getLen());
    for(int i1=0; i1<msg.getLen(); i1++)
    {
