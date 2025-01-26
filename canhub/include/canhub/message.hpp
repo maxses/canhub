@@ -36,6 +36,7 @@ struct SMessage
       flags=0;
       id=0;
       magic=MAGIC;
+      strcpy(senderName, "noSender");
    }
    
    SMessage(int _id, int _length, const unsigned char* _data)
@@ -43,6 +44,8 @@ struct SMessage
       eType=EType::Message;
       setId(_id);
       setData(_length, _data);
+      magic=MAGIC;
+      strcpy(senderName, "noSender");
    }
 
    void setId(int _id)
