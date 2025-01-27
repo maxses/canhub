@@ -35,8 +35,8 @@ CTestConnector::CTestConnector( QObject *parent )
    :CConnectorTcpClient( parent, "testConnector", "localhost", CANHub::CANSERVER_UNITTEST_PORT )
 {
    bool success = connect(
-         this, SIGNAL( dataIn( const SMessage&, CANHub::CConnector* ) ),
-         this, SLOT( slotVerifyDataIn( const SMessage&, CANHub::CConnector* ) ),Qt::DirectConnection );
+         this, SIGNAL( dataIn( const CANHub::SMessage&, CANHub::CConnector* ) ),
+         this, SLOT( slotVerifyDataIn( const CANHub::SMessage&, CANHub::CConnector* ) ),Qt::DirectConnection );
    Q_ASSERT(success);
    
    return;
