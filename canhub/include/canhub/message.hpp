@@ -70,7 +70,7 @@ struct SMessage
    }
    void setSenderName( const QString _senderName )
    {
-      snprintf(senderName, sizeof(senderName), qPrintable(_senderName) );
+      strncpy(senderName, qPrintable(_senderName), sizeof(senderName) );
    }
    
    int getLen() const
