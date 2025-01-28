@@ -43,7 +43,7 @@ CTestConnector::CTestConnector( QObject *parent )
 }
 
 
-void CTestConnector::slotVerifyDataIn( const SMessage& msg, CConnector* source )
+void CTestConnector::slotVerifyDataIn( const CANHub::SMessage& msg, CConnector* source )
 {
    // Example from candump from cant-utils
    //   can0  464   [8]  0B 04 30 00 D4 1B 00 00

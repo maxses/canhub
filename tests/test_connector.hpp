@@ -54,7 +54,7 @@ class CTestConnector: public CConnectorTcpClient
       }
    
    public slots:
-      void slotVerifyDataIn( const SMessage& msg, CANHub::CConnector* source );
+      void slotVerifyDataIn( const CANHub::SMessage& msg, CANHub::CConnector* source );
    
    private:
 };
