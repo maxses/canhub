@@ -16,7 +16,9 @@
 
 
 #define CATCH_CONFIG_MAIN
-#define LEPTO_LOG_DEBUG
+#if ! defined( LEPTO_LOG_DEBUG )
+   #define LEPTO_LOG_DEBUG
+#endif
 
 #if defined ( CATCH_V3 )
    #include <catch2/catch_test_macros.hpp>
