@@ -85,6 +85,7 @@ calculateVersionCode()
       let MAX_DISTCODE=0xF0
       if [ "${DISTCODE}" -gt "${MAX_DISTCODE}" ]; then
          echo "Error: Distance to version too high. Consider taging a new version"
+	 echo "PWD: $PWD"
          exit 22
       fi
    else
