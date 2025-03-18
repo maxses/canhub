@@ -1,35 +1,29 @@
-cmake_minimum_required(VERSION 3.10)
+#------------------------------------------------------------------------------
+#
+# \brief CMakeLists.txt husk for CANHub libraries and binaries
+#
+#------------------------------------------------------------------------------
 
-project(canserver LANGUAGES CXX VERSION 1.0.1)
+cmake_minimum_required( VERSION 3.10 )
 
-find_package(Qt6 REQUIRED COMPONENTS Core Network )
+project( canhub LANGUAGES CXX VERSION 1.0.1 )
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-if( NOT Qt6_FOUND )
-        find_package( Qt5 COMPONENTS Core Network REQUIRED )
-        set( QT_VERSION 5 )
-        set( QT5 Yes )
-else ( NOT Qt6_FOUND )
-    set( QT_VERSION 6 )
-endif( NOT Qt6_FOUND )
+set( CMAKE_MODULE_PATH   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/gitversion" )
 
+find_package( QT NAMES Qt5 Qt6 COMPONENTS Core Network REQUIRED )
+find_package( Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Network )
+find_package( GitVersion REQUIRED )
 
-set(CMAKE_CXX_STANDARD 20)
+set( CMAKE_CXX_STANDARD 20 )
 
-add_executable( canserver 
-   main.cpp
-   canserver.cpp
-   canserver.hpp
-   connection.cpp
-   connection.hpp
-)
+add_subdirectory( canhub )
+add_subdirectory( canserver )
+add_subdirectory( candump )
+add_subdirectory( tests )
 
-target_link_libraries(
-   canserver
-   Qt${QT_VERSION}::Network
-)
 
 #---fin------------------------------------------------------------------------
