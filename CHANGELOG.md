@@ -1,3 +1,7 @@
+# Changes for v0.1.2
+
+* Client: Allow port '0' for using default port
+
 # Changes for v0.1.1
 
 * Use QAbstractSocket
