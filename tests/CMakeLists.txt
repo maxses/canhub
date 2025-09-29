@@ -6,7 +6,7 @@
 
 
 cmake_minimum_required(VERSION 3.11)
-project( tests )
+project( canhub_tests )
 
 find_package( Catch2 3 )
 if( NOT Catch2_FOUND )
@@ -32,30 +32,33 @@ else( NOT Catch2_FOUND)
 endif( NOT Catch2_FOUND )
 
 
-set(headers
-   test_connector.hpp
+set(
+   headers
+      test_connector.hpp
 )
 
 
-set(sources
-   test_routing.cpp
-   test_connector.cpp
+set(
+   sources
+      test_routing.cpp
+      test_connector.cpp
 )
 
-add_executable( tests
-   ${sources}
-   ${headers}
+add_executable(
+   ${PROJECT_NAME}
+      ${sources}
+      ${headers}
 )
 
 target_link_libraries(
-   tests
-   canhub
-   ${CATCH_LIBRARY}
+   ${PROJECT_NAME}
+      canhub
+      ${CATCH_LIBRARY}
 )
 
 add_test(
-   NAME tests
-   COMMAND tests
+   NAME ${PROJECT_NAME}
+   COMMAND ${PROJECT_NAME}
    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 

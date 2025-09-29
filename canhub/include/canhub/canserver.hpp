@@ -46,6 +46,9 @@ class CCanServer
          :public QTcpServer
 {
    Q_OBJECT
+   
+private:
+   int m_port;
 
 public:
    explicit CCanServer(QObject *parent = 0, int port = CANHub::CANSERVER_DEFAULT_PORT );
@@ -69,6 +72,10 @@ protected:
 
 public:
    bool addSocketCan(const QString interface = "can0" );
+   int getPort()
+   {
+      return( m_port );
+   }
 };
 
 

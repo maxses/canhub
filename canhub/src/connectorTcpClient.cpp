@@ -40,7 +40,7 @@ CConnectorTcpClient::CConnectorTcpClient( QObject *parent, QString name, const Q
    connect( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ) );
    m_heartbeatTimer.start(2000);
    
-   m_socket.connectToHost( host, port );
+   m_socket.connectToHost( host, m_port );
    if( !m_socket.waitForConnected() )
    {
       qFatal("Could not connect to '%s'", qPrintable(host));

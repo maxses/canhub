@@ -31,16 +31,37 @@ namespace CANHub
 
 CCanServer::CCanServer(QObject *parent, int port)
    :QTcpServer(parent)
+    ,m_port(port)
 {
-   if(!this->listen( QHostAddress::Any, port ))
-    {
-        qDebug() << "Server could not start!";
-    }
+   if ( ! m_port )
+   {
+      bool valid;
+      
+      // Start at higher port than default to find problems in tests
+      for( m_port=CANHub::CANSERVER_DEFAULT_PORT + 10;
+               m_port<CANHub::CANSERVER_DEFAULT_PORT+100; m_port++)
+      {
+         if( ( valid = this->listen( QHostAddress::Any, m_port ) ) )
+         {
+            break;
+         }
+      }
+      
+      if(!valid)
+      {
+         qFatal("Could not establish server");
+      }
+   }
    else
    {
-      qDebug() << "Server started; port " << port;
+      if(!this->listen( QHostAddress::Any, m_port ))
+      {
+         qFatal( "Server could not start at port %d!", m_port);
+      }
    }
-
+   
+   qDebug( "Server started at port %d", m_port);
+   
    connect ( &m_heartbeatTimer, SIGNAL( timeout() ), this, SLOT( heartbeat() ));
    m_heartbeatTimer.start(1000);
 }

@@ -35,7 +35,8 @@ class CTestConnector: public CConnectorTcpClient
       int m_bad=0;
       
    public:
-      explicit CTestConnector( QObject *parent = 0 );
+      explicit CTestConnector( QObject *parent = 0, const QString name="noname",
+               const QString = "localhost", int port = CANHub::CANSERVER_DEFAULT_PORT );
       int getTotal()
       {
          return(m_total);

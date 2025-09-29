@@ -79,9 +79,11 @@ TEST_CASE( "Routing", "[default]" )
    
    SECTION( "Routing" )
    {
-      CANHub::CCanServer canServer( &app, CANHub::CANSERVER_DEFAULT_PORT + 1 );
-      CANHub::CTestConnector connectorA( &canServer );
-      CANHub::CTestConnector connectorB( &canServer );
+      CANHub::CCanServer canServer( &app, CANHub::CANSERVER_AUTOMATIC_PORT );
+      CANHub::CTestConnector connectorA( &canServer, "testConnectorA",
+               "localhost", canServer.getPort() );
+      CANHub::CTestConnector connectorB( &canServer, "testConnectorB",
+               "localhost", canServer.getPort() );
 
       CANHub::CTestConnector* connectors[2]{ &connectorA, &connectorB };
       
