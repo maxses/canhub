@@ -67,7 +67,6 @@ void CConnectorTcpServer::readyRead()
    {
       QByteArray data = m_pSocket->read( sizeof( SMessage ) );
       
-      qDebug() << m_socketDescriptor << " Data in: " << data;
       SMessage* pMsg( (SMessage*)data.data() );
       
       emit( dataIn( *pMsg, this ) );
@@ -87,7 +86,6 @@ void CConnectorTcpServer::dataOut( const CANHub::SMessage& msg, CConnector* sour
 {
    if( source != this )
    {
-      qDebug() << "Sending packet to Connector";
       QByteArray ba( (char*)&msg, sizeof msg);
       m_pSocket->write( ba );
    }

@@ -56,7 +56,6 @@ CConnectorTcpClient::CConnectorTcpClient( QObject *parent, QString name, const Q
 
 void CConnectorTcpClient::heartbeat()
 {
-   qDebug("Heartbeat; state: %d", m_socket.state());
    if( m_socket.state() == QTcpSocket::UnconnectedState )
    {
       qWarning("Not connect to server. Error: %d; reconnect", m_socket.error());
@@ -76,7 +75,6 @@ void CConnectorTcpClient::readyRead()
    {
       QByteArray data = m_socket.read( sizeof( SMessage ) );
    
-      qDebug() << " Client data in: " << data.size() << "Bytes";
       SMessage* pMsg( (SMessage*)data.data() );
    
       emit( dataIn( *pMsg, this ) );
@@ -88,7 +86,6 @@ void CConnectorTcpClient::dataOut( const SMessage& msg, CConnector* source )
 {
    if( source != this )
    {
-      qDebug() << "Sending packet to Connector";
       QByteArray ba( (char*)&msg, sizeof msg);
       m_socket.write( ba );
    }

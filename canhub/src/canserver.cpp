@@ -96,8 +96,6 @@ void CCanServer::addConnector( CANHub::CConnector* connector )
 
 void CCanServer::heartbeat()
 {
-   qDebug() << "Heartbeat; " << m_listConnections.size() << "connections";
-
 #if 0
    SMessage msg;
    msg.eType = EType::ServerHeartbeat;
@@ -119,7 +117,6 @@ void CCanServer::removeConnection( CANHub::CConnector* connection )
 
 void CCanServer::dataIn( const CANHub::SMessage& msg, CANHub::CConnector* source )
 {
-   qDebug( "Server data in from '%s'", qPrintable(source->getName()) );
    emit( dataOut( msg, source ) );
 }
 
