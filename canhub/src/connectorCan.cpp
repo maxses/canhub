@@ -50,7 +50,8 @@ CConnectorCan::CConnectorCan( QObject *parent, const QString name, const QString
 
 void CConnectorCan::connectCan()
 {
-   struct can_bittiming dbt;
+   // No support to change speed yet
+   // struct can_bittiming dbt;
 
    skt = socket( PF_CAN, SOCK_RAW, CAN_RAW );
    int sta=0;
@@ -188,10 +189,10 @@ void CConnectorCan::reconnect()
 
 void CConnectorCan::checkConnection()
 {
-   int error_code;
-   int sta;
    qDebug("Check; %d", skt );
    #if 0
+   int sta;
+   int error_code;
    socklen_t error_code_size = sizeof(error_code);
    if(skt>0)
    {
@@ -229,8 +230,10 @@ void CConnectorCan::dataOut( const SMessage& msg, CConnector* source )
       
       frame.can_id = msg.getId();
       
-      if(frame.can_id>= 2^11)
+      if( frame.can_id >= 1<<11 ) // 2^11
+      {
          frame.can_id|= CAN_EFF_FLAG;
+      }
 
       frame.can_dlc = msg.getLen();
       memcpy( (char *)frame.data, msg.getData(), frame.can_dlc);

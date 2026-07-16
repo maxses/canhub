@@ -61,7 +61,7 @@ struct SMessage
    void setData(int _length, const unsigned char* _data )
    {
       length = _length;
-      if(length>sizeof(data))
+      if( length > (int)sizeof(data) )
       {
          qWarning("Length to big: %d", length );
          length=sizeof(data);

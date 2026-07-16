@@ -91,7 +91,7 @@ TEST_CASE( "Routing", "[default]" )
       unsigned char buf[64];
       QElapsedTimer timer;
       
-      for(int i1=0; i1<sizeof(testPatterns)/sizeof(testPatterns[0]); i1++)
+      for(int i1=0; i1 < (int)( sizeof(testPatterns)/sizeof(testPatterns[0])); i1++)
       {
          memset( buf, testPatterns[i1].pattern, qMin( (int)sizeof(buf), testPatterns[i1].len ) );
          msg.setId(0x123);

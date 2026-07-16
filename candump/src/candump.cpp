@@ -54,6 +54,8 @@ CCanDump::CCanDump( QObject *parent, CANHub::CConnector* connector )
  */
 void CCanDump::slotDataIn( const CANHub::SMessage& msg, CANHub::CConnector* source )
 {
+   (void)source;
+
    // Example from candump from cant-utils
    //   can0  464   [8]  0B 04 30 00 D4 1B 00 00
    
