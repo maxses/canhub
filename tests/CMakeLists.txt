@@ -39,7 +39,7 @@ add_executable(
 target_link_libraries(
    ${PROJECT_NAME}
       canhub
-      ${CATCH_LIBRARY}
+      ${CATCH2_TARGET}
 )
 
 add_test(
