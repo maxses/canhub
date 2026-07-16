@@ -70,7 +70,9 @@ struct SMessage
    }
    void setSenderName( const QString _senderName )
    {
-      strncpy(senderName, qPrintable(_senderName), sizeof(senderName) );
+      strncpy(senderName, qPrintable(_senderName), sizeof(senderName)-1 );
+      // Compiler warnings are irritating; is last zero written then?
+      senderName[sizeof(senderName)-1]=0;
    }
    
    int getLen() const
