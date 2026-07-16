@@ -28,7 +28,8 @@ namespace CANHub
 
 
 CConnectorTcpClient::CConnectorTcpClient( QObject *parent, QString name, const QString host, int port )
-   :m_socket( this )
+   :CConnector( parent, name )
+   ,m_socket( this )
    ,m_host( host )
    ,m_port( port ? port : CANHub::CANSERVER_DEFAULT_PORT )
 {

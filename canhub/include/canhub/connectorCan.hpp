@@ -43,7 +43,7 @@ class CConnectorCan
       QSocketNotifier *m_socketNotifier;
       QAbstractSocket m_socket;
       QTimer m_checkTimer;
-      int skt;
+      int m_socketFd;
       bool m_connected;
       
    public:

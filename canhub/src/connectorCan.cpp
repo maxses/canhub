@@ -37,8 +37,8 @@ CConnectorCan::CConnectorCan( QObject *parent, const QString name, const QString
    :CConnector( parent, name )
    ,m_socketNotifier( nullptr )
    ,m_socket( QAbstractSocket::TcpSocket, parent )
+   ,m_socketFd( 0 )
    ,m_connected( false )
-   ,skt( 0 )
 {
    m_interface=interface;
    connectCan();
@@ -53,12 +53,12 @@ void CConnectorCan::connectCan()
    // No support to change speed yet
    // struct can_bittiming dbt;
 
-   skt = socket( PF_CAN, SOCK_RAW, CAN_RAW );
+   m_socketFd = socket( PF_CAN, SOCK_RAW, CAN_RAW );
    int sta=0;
-   if(skt<0)
+   if( m_socketFd < 0 )
    {
       perror("Socket");
-      skt=0;
+      m_socketFd=0;
       return;
    }
 
@@ -66,7 +66,7 @@ void CConnectorCan::connectCan()
    struct ifreq ifr;
 
    strcpy(ifr.ifr_name, qPrintable( m_interface ));
-   sta=ioctl(skt, SIOCGIFINDEX, &ifr); /* ifr.ifr_ifindex gets filled
+   sta=ioctl( m_socketFd, SIOCGIFINDEX, &ifr); /* ifr.ifr_ifindex gets filled
                                   * with that device's index */
    if(sta<0)
    {
@@ -76,13 +76,13 @@ void CConnectorCan::connectCan()
    }
    
    int val=1;
-   sta=setsockopt( skt, SOL_SOCKET, SO_KEEPALIVE, &val, sizeof(val));
+   sta=setsockopt( m_socketFd, SOL_SOCKET, SO_KEEPALIVE, &val, sizeof(val));
 
    /* Select that CAN interface, and bind the socket to it. */
    struct sockaddr_can addr;
    addr.can_family = AF_CAN;
    addr.can_ifindex = ifr.ifr_ifindex;
-   sta=::bind( skt, (struct sockaddr*)&addr, sizeof(addr) );
+   sta=::bind( m_socketFd, (struct sockaddr*)&addr, sizeof(addr) );
    if(sta<0)
    {
       perror("Bind");
@@ -90,8 +90,8 @@ void CConnectorCan::connectCan()
       return;
    }
 
-   m_socketNotifier=new QSocketNotifier(skt, QSocketNotifier::Read );
-   if ( !m_socket.setSocketDescriptor( skt ) )
+   m_socketNotifier=new QSocketNotifier(m_socketFd, QSocketNotifier::Read );
+   if ( !m_socket.setSocketDescriptor( m_socketFd ) )
    {
       qFatal("Could not set abstract socket");
    }
@@ -124,7 +124,7 @@ void CConnectorCan::readyReadSlot( int socket )
    //while( ( bytes_read = read( skt, (char *)&frame, sizeof(frame) ) ) > 0 )
    //while( m_socket.bytesAvailable() )
    {
-      bytes_read = read( skt, (char *)&frame, sizeof(frame) );
+      bytes_read = read( socket, (char *)&frame, sizeof(frame) );
       
       // Only way yet to detect an problem
       if( bytes_read < 0 )
@@ -173,8 +173,8 @@ void CConnectorCan::disconnect()
       delete(m_socketNotifier);
       m_socketNotifier=nullptr;
    }
-   close(skt);
-   skt=0;
+   close( m_socketFd );
+   m_socketFd=0;
    m_connected = false;
    emit( connectionChanged(false) );
 }
@@ -189,7 +189,8 @@ void CConnectorCan::reconnect()
 
 void CConnectorCan::checkConnection()
 {
-   qDebug("Check; %d", skt );
+   qDebug("Check; %d", m_socketFd );
+
    #if 0
    int sta;
    int error_code;
@@ -237,7 +238,7 @@ void CConnectorCan::dataOut( const SMessage& msg, CConnector* source )
 
       frame.can_dlc = msg.getLen();
       memcpy( (char *)frame.data, msg.getData(), frame.can_dlc);
-      int bytes_sent = write( skt, (const char *)&frame, sizeof(frame) );
+      int bytes_sent = write( m_socketFd, (const char *)&frame, sizeof(frame) );
       
       qDebug("Bytes send: %d\n", bytes_sent);
    }
