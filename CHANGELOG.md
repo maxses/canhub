@@ -1,3 +1,7 @@
+# Changes for v0.1.4
+
+* Minor fixes
+
 # Changes for v0.1.3
 
 * [#698] Dynamic port assigning
