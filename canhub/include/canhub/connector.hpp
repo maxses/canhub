@@ -57,7 +57,7 @@ signals:
    void connectionChanged( bool connected );
 
 public slots:
-   virtual void dataOut( const SMessage&, CANHub::CConnector* source ) = 0;
+   virtual void dataOut( const CANHub::SMessage&, CANHub::CConnector* source ) = 0;
 };
 
 } // namespace CANHub
