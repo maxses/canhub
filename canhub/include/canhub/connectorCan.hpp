@@ -8,7 +8,7 @@
  *             Se class documentation.
  *
  *  \date      20240821
- *  \author    Maximilian Seesslen <mes@seesslen.net>
+ *  \author    Maximilian Seesslen <src@seesslen.net>
  *  \copyright SPDX-License-Identifier: Apache-2.0
  *
  *---------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ class CConnectorCan
       QSocketNotifier *m_socketNotifier;
       QAbstractSocket m_socket;
       QTimer m_checkTimer;
-      int skt;
+      int m_socketFd;
       bool m_connected;
       
    public:

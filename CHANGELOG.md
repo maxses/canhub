@@ -1,3 +1,11 @@
+# Changes for v0.1.4
+
+* Minor fixes
+
+# Changes for v0.1.3
+
+* [#698] Dynamic port assigning
+
 # Changes for v0.1.2
 
 * Client: Allow port '0' for using default port

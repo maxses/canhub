@@ -82,6 +82,7 @@ int main(int argc, char *argv[])
    }
    
    CANHub::CCanDump* dump=new CANHub::CCanDump( &app, connector );
+   (void)dump;
    
    return app.exec();
 }
