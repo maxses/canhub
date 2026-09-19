@@ -13,6 +13,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+enable_testing()
+
 set( CMAKE_MODULE_PATH   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/gitversion" )
 
 find_package( QT NAMES Qt5 Qt6 COMPONENTS Core Network REQUIRED )
