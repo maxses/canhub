@@ -93,7 +93,10 @@ void CConnectorCan::connectCan()
    m_socketNotifier=new QSocketNotifier(m_socketFd, QSocketNotifier::Read );
    if ( !m_socket.setSocketDescriptor( m_socketFd ) )
    {
-      qFatal("Could not set abstract socket");
+      // This can happen e.g. when wakeup from suspension
+      qCritical("Could not set abstract socket, skt=%d", skt );
+      delete m_socketNotifier;
+      return;
    }
 
    connect ( m_socketNotifier, SIGNAL( activated( int ) ), this, SLOT( readyReadSlot( int ) ) );
@@ -231,11 +234,11 @@ void CConnectorCan::dataOut( const SMessage& msg, CConnector* source )
       
       frame.can_id = msg.getId();
       
-      if( frame.can_id >= 1<<11 ) // 2^11
+      if( frame.can_id >= ( 1 << 11 ) ) // 2^11
       {
-         frame.can_id|= CAN_EFF_FLAG;
+         frame.can_id |= CAN_EFF_FLAG;
       }
-
+      
       frame.can_dlc = msg.getLen();
       memcpy( (char *)frame.data, msg.getData(), frame.can_dlc);
       int bytes_sent = write( m_socketFd, (const char *)&frame, sizeof(frame) );
