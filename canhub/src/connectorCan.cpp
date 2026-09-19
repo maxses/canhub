@@ -94,7 +94,7 @@ void CConnectorCan::connectCan()
    if ( !m_socket.setSocketDescriptor( m_socketFd ) )
    {
       // This can happen e.g. when wakeup from suspension
-      qCritical("Could not set abstract socket, skt=%d", skt );
+      qCritical("Could not set abstract socket, skt=%d", m_socketFd );
       delete m_socketNotifier;
       return;
    }
