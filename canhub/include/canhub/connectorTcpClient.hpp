@@ -48,7 +48,7 @@ public:
 public slots:
    void heartbeat();
    void readyRead();
-   virtual void dataOut( const SMessage&, CConnector* source ) override;
+   virtual void dataOut( const SMessage&, CANHub::CConnector* source ) override;
 
     
 private:
